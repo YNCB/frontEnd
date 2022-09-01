@@ -1,0 +1,28 @@
+button {
+    outline: none;
+    border: none;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.header{
+    max-width: 1190px;
+    height: 85px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.logoImg>img{
+
+    vertical-align: bottom;
+}
+.navContainer{
+    
+    display: flex;
+    gap: 50px;
+}
+.navContainer>button{
+    font-family: 'SpoqaM';
+    font-size: 18px;
+}
