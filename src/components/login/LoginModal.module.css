@@ -1,0 +1,35 @@
+.loginModalBack {
+    z-index: 999;
+    background: rgba(77, 77, 77, 0.5);
+    display: block;
+    position: fixed;
+    inset: 0px;
+}
+
+.loginModalContainer {
+    z-index: 1000;
+    position: fixed;
+    inset: 0px;
+}
+
+.loginModalBox{
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: relative;
+    width: 850px;
+    height: 580px;
+    background-color: #fff;
+}
+
+.closeWrapper {
+    background: #f8f9fa;
+    height: 40px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 20px;
+}
+.closeWrapper > svg {
+    cursor: pointer;
+}
