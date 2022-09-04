@@ -24,3 +24,6 @@ yarn-error.log*
 
 # env
 .env
+
+# 기술회고 폴더
+/기술회고
