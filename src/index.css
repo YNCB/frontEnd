@@ -13,31 +13,6 @@ code {
     monospace;
 }
 
-@font-face {
-  font-family: 'SpoqaL';
-  font-display: fallback;
-  src: url('./fonts/SpoqaHanSansNeo-Light.eot') format('embedded-opentype'),
-      url('./fonts/SpoqaHanSansNeo-Light.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'SpoqaR';
-  font-display: fallback;
-  src: url('./fonts/SpoqaHanSansNeo-Regular.eot') format('embedded-opentype'),
-      url('./fonts/SpoqaHanSansNeo-Regular.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'SpoqaM';
-  font-display: fallback;
-  src: url('./fonts/SpoqaHanSansNeo-Medium.eot') format('embedded-opentype'),
-      url('./fonts/SpoqaHanSansNeo-Medium.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'SpoqaB';
-  font-display: fallback;
-  src: url('./fonts/SpoqaHanSansNeo-Bold.eot') format('embedded-opentype'),
-      url('./fonts/SpoqaHanSansNeo-Bold.woff2') format('woff2');
-}
-
 a {
   color: inherit;
   text-decoration: none;
@@ -54,7 +29,7 @@ img {
   vertical-align: bottom;
 }
 
-ul, li {
+ul, li,p {
   list-style: none;
   padding-left: 0px;
   margin: 0;
