@@ -12,7 +12,7 @@
     inset: 0px;
 }
 
-.loginModalBox{
+.loginModalBox {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -20,16 +20,98 @@
     width: 850px;
     height: 580px;
     background-color: #fff;
+    overflow: hidden;
+    border-radius: 8px;
+    animation: downModal .4s ease-out alternate forwards;
+}
+@keyframes downModal {
+    0% {
+        transform: translateY(-200%) translateX(-50%);
+    }
+    100% {
+        transform: translateY(-50%) translateX(-50%);
+    }
 }
 
-.closeWrapper {
-    background: #f8f9fa;
+.loginModalHeader {
+    background: #d9d9d9;
     height: 40px;
     display: flex;
     justify-content: flex-end;
     align-items: center;
     padding: 0 20px;
 }
-.closeWrapper > svg {
+
+.loginModalHeader>svg {
     cursor: pointer;
+}
+
+.loginModalContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.loginModalContent > h1 {
+    margin-top: 70px;
+    font-size: 32px;
+    font-family: 'SpoqaM';
+}
+
+.socialLoginContainer {
+    display: flex;
+    margin-top: 70px;
+    justify-content: space-between;
+    width: 60%;
+}
+
+.socialLoginContainer>div {
+    display: flex;
+    flex-direction: column;
+}
+
+.socialLoginContainer>div>button {
+    width: 148px;
+    height: 148px;
+    box-shadow: 0 5px 25px rgb(0 0 0 / 15%);
+    border-radius: 10px;
+}
+
+.socialLoginContainer>div>p {
+    text-align: center;
+    font-family: 'SpoqaB';
+    color: #565656;
+    margin-top: 15px;
+}
+
+.googleLoginWrapper {
+
+}
+
+.googleLoginButton {
+
+}
+
+.googleLoginTitle {
+
+}
+.KakaoLoginWrapper {
+}
+
+.KakaoLoginButton {
+    background: #FAE100;
+}
+
+.KakaoLoginTitle {
+
+}
+.emailLoginWrapper {
+
+}
+
+.emailLoginButton {
+    background: #5B5B5B;
+}
+
+.emailLoginTitle {
+
 }
