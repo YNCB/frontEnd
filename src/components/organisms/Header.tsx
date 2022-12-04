@@ -1,15 +1,21 @@
 import {Link} from 'react-router-dom';
-import ModalPortal from '../../ModalPortal'
-import LoginModal from '../LoginModal/LoginModal';
-import { useState } from 'react';
+import ModalPortal from '../../ModalPortal';
+import Modal from '../Modals/Modal';
+import LoginModal from '../Modals/LoginModal';
+import EmailLogin from '../Modals/EmailLoginModal';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
+import { changeModal } from '../../reducers/modal';
 
 const Header = () => {
 
-    const [modal, setModal] = useState('')
+    const modal = useSelector((state: RootState) => state.modal)
+    const dispatch = useDispatch();
 
-    const handleModalOff = () => {setModal('')}
-    const handleModalOn = () => {setModal('on')}
+    const handleModalOff = () => dispatch(changeModal(0))
+    const handleModalOn = () => dispatch(changeModal(1))
 
     return (
         <>
@@ -23,7 +29,11 @@ const Header = () => {
                     </NavWrapper>
                 </HeaderNav>
             </HeaderContainer>
-            {modal && <ModalPortal><LoginModal onClose={handleModalOff}/></ModalPortal>}
+            <ModalPortal>
+                {
+                 modal.page >= 1 && <Modal onClose={handleModalOff}/> 
+                }
+            </ModalPortal>
         </>
     )
 }
