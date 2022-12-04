@@ -18,10 +18,3 @@
     src: url('./fonts/SpoqaHanSansNeo-Medium.eot') format('embedded-opentype'),
         url('./fonts/SpoqaHanSansNeo-Medium.woff2') format('woff2');
 }
-
-@font-face {
-    font-family: 'SpoqaB';
-    font-display: fallback;
-    src: url('./fonts/SpoqaHanSansNeo-Bold.eot') format('embedded-opentype'),
-        url('./fonts/SpoqaHanSansNeo-Bold.woff2') format('woff2');
-}
