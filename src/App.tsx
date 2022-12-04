@@ -1,21 +1,25 @@
 import React from 'react';
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
-import Header from './components/Header/Header';
+import Header from './components/organisms/Header';
 import MyBoxPage from './pages/myBoxPage/MyBoxPage';
 import PostProblemPage from './pages/postProblemPage/PostProblemPage';
-import OthersPage from './pages/othersPage/OthersPage';
+import MainPage from './pages/MainPage/MainPage';
+import KakaoRedirect from './pages/Redirect/KakaoRedirect';
+import ScrollToTop from './components/common/ScrollToTop';
 
 function App() {
-  return (
-    <BrowserRouter>
-      <Header/>
-      <Routes>
-        <Route path='/' element={<OthersPage/>} />
-        <Route path='/mybox' element={<MyBoxPage/>} />
-        <Route path='/post' element={<PostProblemPage/>} />
-      </Routes>
-    </BrowserRouter>
-  );
+    return (
+		<BrowserRouter>
+			<ScrollToTop/>
+			<Header/>
+			<Routes>
+			<Route path='/' element={<MainPage/>} />
+			<Route path='/mybox' element={<MyBoxPage/>} />
+			<Route path='/post' element={<PostProblemPage/>} />
+			<Route path='/login/oauth2' element={<KakaoRedirect/>} />
+			</Routes>
+		</BrowserRouter>
+    );
 }
 
 export default App;
