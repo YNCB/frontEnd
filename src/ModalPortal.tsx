@@ -1,8 +1,7 @@
-import { ReactNode } from "react";
 import ReactDOM from "react-dom";
 
 interface Props {
-    children: ReactNode;
+    children: React.ReactNode;
 }
 
 const ModalPortal  = ({children} : Props) => {
