@@ -56,10 +56,46 @@ export const ModalContent = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 0 172px;
+    padding: 0 172px;
     h1{
         margin-top: 50px;
         font-size: 32px;
         font-family: 'SpoqaM';
+        text-align: center;
     }
+`
+
+export const ModalContentMargin = styled.div`
+    padding: 0 88px;
+    width: 100%;
+    h1 {
+        margin-bottom: 50px;
+    }
+`
+
+export const InputContainer = styled.div<{ gap: string }>`
+    display: flex;
+    flex-direction: column;
+    gap: ${(props) => props.gap}
+
+`
+
+export const InputWrapper = styled.div`
+
+    h3 {
+        font-family: 'SpoqaR';
+        margin-bottom: 5px;
+    }
+    p {
+        margin-left: 3px;
+        color: #E10000;
+    }
+`
+
+export const ButtonContainer = styled.div<{ marginTop: string}>`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin-top: ${(props) => props.marginTop};
 `
