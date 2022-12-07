@@ -4,7 +4,7 @@ import './font.css';
 import './index.css';
 import App from './App';
 import { Provider } from 'react-redux';
-import {store, persistor} from './store/store';
+import {store, persistor} from './store/config';
 import { PersistGate } from 'redux-persist/integration/react';
 import ScrollToTop from './components/common/ScrollToTop';
 

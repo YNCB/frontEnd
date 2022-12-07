@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit"
 
-const auth = createSlice({
+const authSlice = createSlice({
     name: "auth",
     initialState: {
         authenticated: false,
@@ -12,4 +12,4 @@ const auth = createSlice({
     }
 })
 
-export default auth
+export default authSlice
