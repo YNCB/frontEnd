@@ -2,8 +2,8 @@ import * as S from './ModalStyle'
 import BackBtn from "../atoms/BackBtn";
 import InputAtom from "../atoms/Input";
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../store/store';
-import { changeModal } from '../../reducers/modal';
+import { RootState } from '../../store/config';
+import { changeModal } from '../../store/slices/modalSlice';
 import LoginModal from './LoginModal';
 import EmailLoginModal from './EmailLoginModal';
 import DetailInfoModal from './DetailInfoModal';
@@ -29,11 +29,11 @@ const Modal = ({onClose}: S.ModalProps) => {
                             </svg>
                     </S.ModalHeader>
                     <S.ModalContent>
-                        { modal.page > 1 ?  <BackBtn size="50px" position="absolute" top="65px" left="25px" handler={ () => backButtonHandler() }/> : null}
+                        { modal.page > 1 ?  <BackBtn size="50px" position="absolute" top="65px" left="25px" handler={ () => backButtonHandler() }/> : null}    
                         {
-                            ( modal.page === 1 && <LoginModal onClose={ () => {onClose()} }/> ) || 
-                            ( modal.page === 2 && <EmailLoginModal onClose={ () => {onClose()} }/> ) ||
-                            ( modal.page === 3 && <DetailInfoModal onClose={ () => {onClose()} }/> )
+                            ( modal.page === 1 && <LoginModal/> ) || 
+                            ( modal.page === 2 && <EmailLoginModal/> ) ||
+                            ( modal.page === 3 && <DetailInfoModal/> )
                         }
                     </S.ModalContent>
                 </S.ModalBox>

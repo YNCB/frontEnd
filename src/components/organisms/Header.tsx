@@ -6,8 +6,8 @@ import EmailLogin from '../Modals/EmailLoginModal';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../store/store';
-import { changeModal } from '../../reducers/modal';
+import { RootState } from '../../store/config';
+import { changeModal } from '../../store/slices/modalSlice';
 
 const Header = () => {
 
