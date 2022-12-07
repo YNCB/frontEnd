@@ -18,9 +18,13 @@ interface BoxProps {
 const Box = ({problemList}: BoxProps) => {
     const [focus, setFocus] = useState(-1);
 
+    const [problemInputs, setproblemInputs] = useState({
+        problemNumber: ''
+    })
+
     return (
         <S.MainContainer>
-            <InputAtom name="problemNumber" type="number" placeHolder="문제 번호를 입력하세요." width="370px"></InputAtom>
+            <InputAtom inputs={problemInputs} setInputs={setproblemInputs} name="problemNumber" type="number" placeHolder="문제 번호를 입력하세요." width="370px"></InputAtom>
             <S.ContentWrapper>
                 <S.ContentList>
                 {problemList.map((item, idx) => {
