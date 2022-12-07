@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components"
+import styled from "styled-components"
 
 type InputWrapperType = {
     width: string,
@@ -8,11 +8,6 @@ const InputWrapper = styled.div<InputWrapperType>`
     width: ${(props) => props.width};
     height: 50px;
     margin: auto;
-`
-
-const InputBox = styled.div`
-	width: 100%;
-	height: 100%;
 `
 
 const Input = styled.input`
@@ -26,21 +21,27 @@ const Input = styled.input`
 `
 
 interface InputProps {
+    inputs: {},
+    setInputs({}): void,
     name: string,
     type: string,
     placeHolder?: string,
-    handler?: any,
     width: string
 }
 
-const InputAtom = ({name, type, placeHolder, handler, width}: InputProps) => {
+const InputAtom = ({inputs, setInputs, name, type, placeHolder, width}: InputProps) => {
+
+    const inputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const {value, name} = e.target;
+        setInputs({
+            ...inputs,
+            [name]: value
+        })
+    }
 
     return (
         <InputWrapper width={width}>
-            <InputBox>
-                <Input name={name} type={type} placeholder={placeHolder} onChange={ () => handler() }/>
-            </InputBox>
-        
+            <Input name={name} type={type} placeholder={placeHolder} onChange={ (e) => inputHandler(e) }/>
         </InputWrapper>
     )
 }
