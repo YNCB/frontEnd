@@ -1,11 +1,9 @@
-import React from 'react'
 import styled from 'styled-components';
-import axios from "axios";
-import * as S from './ModalStyle'
-import { changeModal } from '../../reducers/modal';
 import { useDispatch } from 'react-redux';
+import { changeModal } from '../../store/slices/modalSlice';
 
-const LoginModal = ({onClose}: S.ModalProps) => {
+const LoginModal = () => {
+    const dispatch = useDispatch();
 
     const kakaoLoginHandler = () => {
         const {Kakao} = window;
@@ -16,8 +14,7 @@ const LoginModal = ({onClose}: S.ModalProps) => {
         })
     }
 
-    const dispatch = useDispatch();
-    const emailLoginHandler = () => {
+    const emailLoginButtonHandler = () => {
         dispatch(changeModal(2))
     }
 
@@ -38,7 +35,7 @@ const LoginModal = ({onClose}: S.ModalProps) => {
                     <SnsLoginTitle>Kakao 로그인</SnsLoginTitle>
                 </SnsLoginWrapper>
                 <SnsLoginWrapper>
-                    <SnsLoginBtn onClick = { () => emailLoginHandler() } bgColor={"#5B5B5B"}>
+                    <SnsLoginBtn onClick = { () => emailLoginButtonHandler() } bgColor={"#5B5B5B"}>
                         <SnsLoginImg sns="emailIcon" />
                     </SnsLoginBtn>
                     <SnsLoginTitle>Email 로그인</SnsLoginTitle>
@@ -72,7 +69,7 @@ const SnsLoginTitle = styled.p`
     text-align: center;
     font-family: 'SpoqaM';
     color: #565656;
-    margin-top: 15px;   
+    margin-top: 15px;
 `
 
 const SnsLoginImg = styled.img.attrs< {sns : string} >(
