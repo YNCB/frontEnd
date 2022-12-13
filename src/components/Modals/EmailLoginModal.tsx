@@ -15,6 +15,11 @@ const EmailLoginModal = () => {
     const modal = useSelector((state: RootState) => state.modal)
     const dispatch = useDispatch();
 
+    const [loginFail, setLoginFail] = useState({
+        email: '',
+        password: ''
+    })
+
     const [loginInputs, setLoginInputs] = useState({
         email: '',
         pw: ''
@@ -29,16 +34,16 @@ const EmailLoginModal = () => {
 	return (
 		<ModalContentMargin>
             <h1>Email 로그인</h1>
-            <InputContainer gap={'13px'}>
+            <InputContainer gap={'15px'}>
                 <InputWrapper>
                     <h3>이메일</h3>
                     <InputAtom inputs={loginInputs} setInputs={setLoginInputs} name="email" type="email" placeHolder="codebox@example.com" width="100%"></InputAtom>
-                    <p>서비스에 가입되지 않은 이메일입니다.</p>
+                    <p>{loginFail.email}</p>
                 </InputWrapper>
                 <InputWrapper>
                     <h3>비밀번호</h3>
                     <InputAtom inputs={loginInputs} setInputs={setLoginInputs} name="pw" type="password" placeHolder="비밀번호를 입력하세요." width="100%"></InputAtom>
-                    <p>비밀번호가 일치하지 않습니다.</p>
+                    <p>{loginFail.password}</p>
                 </InputWrapper>
             </InputContainer>
             <ButtonContainer marginTop='35px'>

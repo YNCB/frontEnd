@@ -56,6 +56,7 @@ export const ModalContent = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    height: calc(100% - 40px);
     padding: 0 172px;
     h1{
         margin-top: 50px;
@@ -83,12 +84,15 @@ export const InputContainer = styled.div<{ gap: string }>`
 export const InputWrapper = styled.div`
 
     h3 {
-        font-family: 'SpoqaR';
+        font-family: 'SpoqaL';
         margin-bottom: 5px;
+        font-size: 16px;
     }
     p {
         margin-left: 3px;
         color: #E10000;
+        font-size: 12px;
+        height: 15px;
     }
 `
 
