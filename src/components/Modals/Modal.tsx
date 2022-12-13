@@ -8,6 +8,7 @@ import LoginModal from './LoginModal';
 import EmailLoginModal from './EmailLoginModal';
 import DetailInfoModal from './DetailInfoModal';
 import { useEffect } from 'react';
+import EmailSignInModal from './EmailSignInModal';
 
 const Modal = ({onClose}: S.ModalProps) => {
 
@@ -33,7 +34,8 @@ const Modal = ({onClose}: S.ModalProps) => {
                         {
                             ( modal.page === 1 && <LoginModal/> ) || 
                             ( modal.page === 2 && <EmailLoginModal/> ) ||
-                            ( modal.page === 3 && <DetailInfoModal/> )
+                            ( modal.page === 3 && <EmailSignInModal/> ) ||
+                            ( modal.page === 4 && <DetailInfoModal/> )
                         }
                     </S.ModalContent>
                 </S.ModalBox>
