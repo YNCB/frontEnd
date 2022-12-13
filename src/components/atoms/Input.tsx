@@ -6,14 +6,14 @@ type InputWrapperType = {
 
 const InputWrapper = styled.div<InputWrapperType>`
     width: ${(props) => props.width};
-    height: 50px;
+    height: 40px;
     margin: auto;
 `
 
 const Input = styled.input`
     width: 100%;
     height: 100%;
-    font-size: 20px;
+    font-size: 16px;
     font-family: 'SpoqaR';
     padding: 0px 10px;
     border: 1px solid #B4B4B4;
