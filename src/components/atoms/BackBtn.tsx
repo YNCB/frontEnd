@@ -20,7 +20,6 @@ const BackButton = styled.button<BackButtonType>`
     position: ${(props) => props.arrowPosition || "relative"};
     top: ${(props) => props.arrowTop || "0"};
     left: ${(props) => props.arrowLeft || "0"};
-
 `
 
 const BackBtn = ({size, position, top, left, handler}: BackBtnProps) => {
