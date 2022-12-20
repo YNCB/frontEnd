@@ -3,11 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/config";
 import { changeModal } from "../../store/slices/modalSlice";
-import InputAtom from "../atoms/Input";
 import { ModalContentMargin, InputContainer, InputWrapper, ButtonContainer } from './ModalStyle'
 import { useState } from "react";
 import { stringify } from "querystring";
 import ButtonAtoms from "../atoms/Button";
+import { OnlyInput } from "../molecules/Input";
 
 const EmailLoginModal = () => {
 	const navigate = useNavigate();
@@ -37,12 +37,12 @@ const EmailLoginModal = () => {
             <InputContainer gap={'15px'}>
                 <InputWrapper>
                     <h3>이메일</h3>
-                    <InputAtom inputs={loginInputs} setInputs={setLoginInputs} name="email" type="email" placeHolder="codebox@example.com" width="100%"></InputAtom>
+                    <OnlyInput inputs={loginInputs} setInputs={setLoginInputs} name="email" type="email" placeHolder="codebox@example.com" width="100%"></OnlyInput>
                     <p>{loginFail.email}</p>
                 </InputWrapper>
                 <InputWrapper>
                     <h3>비밀번호</h3>
-                    <InputAtom inputs={loginInputs} setInputs={setLoginInputs} name="pw" type="password" placeHolder="비밀번호를 입력하세요." width="100%"></InputAtom>
+                    <OnlyInput inputs={loginInputs} setInputs={setLoginInputs} name="pw" type="password" placeHolder="비밀번호를 입력하세요." width="100%"></OnlyInput>
                     <p>{loginFail.password}</p>
                 </InputWrapper>
             </InputContainer>

@@ -7,7 +7,7 @@ interface ButtonProps {
     color: string
 }
 
-const ButtonAtoms = ({children, width, handler, color}: ButtonProps) => {
+const ButtonAtom = ({children, width, handler, color}: ButtonProps) => {
 
     return (
         <ButtonWrapper width={width ? width : '100%'}>
@@ -54,4 +54,4 @@ const theme: {[key: string]: {}} = {
     }
 }
 
-export default ButtonAtoms
+export default ButtonAtom

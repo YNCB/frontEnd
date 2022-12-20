@@ -1,6 +1,5 @@
 import * as S from './ModalStyle'
 import BackBtn from "../atoms/BackBtn";
-import InputAtom from "../atoms/Input";
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/config';
 import { changeModal } from '../../store/slices/modalSlice';
@@ -8,7 +7,7 @@ import LoginModal from './LoginModal';
 import EmailLoginModal from './EmailLoginModal';
 import DetailInfoModal from './DetailInfoModal';
 import { useEffect } from 'react';
-import EmailSignInModal from './EmailSignInModal';
+import EmailJoinModal from './EmailJoinModal';
 
 const Modal = ({onClose}: S.ModalProps) => {
 
@@ -34,7 +33,7 @@ const Modal = ({onClose}: S.ModalProps) => {
                         {
                             ( modal.page === 1 && <LoginModal/> ) || 
                             ( modal.page === 2 && <EmailLoginModal/> ) ||
-                            ( modal.page === 3 && <EmailSignInModal/> ) ||
+                            ( modal.page === 3 && <EmailJoinModal/> ) ||
                             ( modal.page === 4 && <DetailInfoModal/> )
                         }
                     </S.ModalContent>
