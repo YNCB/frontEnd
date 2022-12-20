@@ -1,24 +1,24 @@
 import styled from "styled-components"
 
-type InputWrapperType = {
-    width: string,
+interface InputStyledProps {
+    width?: string,
+    border?: string
 }
 
-const InputWrapper = styled.div<InputWrapperType>`
+const Input = styled.input<InputStyledProps>`
     width: ${(props) => props.width};
-    height: 40px;
-    margin: auto;
-`
-
-const Input = styled.input`
-    width: 100%;
     height: 100%;
     font-size: 16px;
     font-family: 'SpoqaR';
     padding: 0px 10px;
-    border: 1px solid #B4B4B4;
+    border: ${(props) => props.border};
     border-radius: 6px;
 `
+
+Input.defaultProps = {
+    width: '100%',
+    border: '1px solid #B4B4B4'
+}
 
 interface InputProps {
     inputs: {},
@@ -26,10 +26,11 @@ interface InputProps {
     name: string,
     type: string,
     placeHolder?: string,
-    width: string
+    width?: string,
+    border?: string
 }
 
-const InputAtom = ({inputs, setInputs, name, type, placeHolder, width}: InputProps) => {
+const InputAtom = ({inputs, setInputs, name, type, placeHolder, width, border}: InputProps) => {
 
     const inputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
         const {value, name} = e.target;
@@ -40,10 +41,8 @@ const InputAtom = ({inputs, setInputs, name, type, placeHolder, width}: InputPro
     }
 
     return (
-        <InputWrapper width={width}>
-            <Input name={name} type={type} placeholder={placeHolder} onChange={ (e) => inputHandler(e) }/>
-        </InputWrapper>
+        <Input border={border} width={width} name={name} type={type} placeholder={placeHolder} onChange={ (e) => inputHandler(e) }/>
     )
 }
 
-export default InputAtom
+export { Input, InputAtom }
