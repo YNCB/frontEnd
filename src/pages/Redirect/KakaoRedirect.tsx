@@ -1,48 +1,61 @@
 import React, { useEffect } from "react";
+import { getKakaoAuthCode } from "../../api/user/user";
+import { useDispatch } from "react-redux";
+import { changeModal } from "../../store/slices/modalSlice";
 import axios from "axios";
 
 const KakaoRedirect = () => {
+
+    const dispatch = useDispatch();
     
     useEffect(() => {
         const params = new URL(document.location.toString()).searchParams;
-        const authCode = params.get("code");
-        
-        axios
-          .get(`${process.env.REACT_APP_BACKEND_BASE_URL}/codebox/login/token/kakao`,
-            {
-              headers: {
+        const authCode = String(params.get("code"));
+        const config = {
+            headers : {
                 "code" : authCode
-              }
             }
-          )
-          .then((res) => {
-            console.log(res)
-          })
-          .catch((err) => {
-            console.log(err)
-          })
-
-
-        // const body = {
-        //   grant_type : "authorization_code",
-        //   client_id : `${process.env.REACT_APP_JS_SDK_KEY}`,
-        //   redirect_uri : `${process.env.REACT_APP_FRONTEND_BASE_URL}/login/oauth2`,
-        //   code : params.get("code")
-        // }
+        }
         
+        async function getKakaoAuthCodeApi () {
+            try {
+                const response = await getKakaoAuthCode(config);
+                const status = response.status;
+                const data = response.data;
+
+                if (status === 200) {
+                    alert('로그인 성공')
+                }
+                else if (status === 201) {
+                    const payload = {
+                        page: 4,
+                        email: data.email,
+                        nickName: data.nickname,
+                        password: data.password,
+                        socialType: data.social_type
+                    }
+                    dispatch(changeModal(payload))
+                }
+                else {
+                    alert(`${status} 에러 : 관리자에게 문의하세요.`)
+                }
+            }
+            catch (err) {
+                alert(`catch ${err} 에러 : 관리자에게 문의하세요.`)
+            }
+        }
+        getKakaoAuthCodeApi();
+
         // axios
-        //   .post(
-        //     `https://kauth.kakao.com/oauth/token`,
-        //     body,
+        //   .get(`${process.env.REACT_APP_BACKEND_BASE_URL}/codebox/login/token/kakao`,
         //     {
-        //         headers: {
-        //             "Content-Type": "application/x-www-form-urlencoded;charset=utf-8"
-        //         },
+        //       headers: {
+        //         "code" : authCode
+        //       }
         //     }
         //   )
         //   .then((res) => {
-        //     console.log(res.data.access_token)
-        //     Kakao.Auth.setAccessToken(res.data.access_token);
+        //     console.log(res)
         //   })
         //   .catch((err) => {
         //     console.log(err)
