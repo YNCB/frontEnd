@@ -1,5 +1,5 @@
 import { useState } from "react";
-import InputAtom from "../atoms/Input";
+import { OnlyInput, SearchBar } from "../molecules/Input";
 import * as S from './BoxStyle'
 
 interface BoxProps {
@@ -24,7 +24,7 @@ const Box = ({problemList}: BoxProps) => {
 
     return (
         <S.MainContainer>
-            <InputAtom inputs={problemInputs} setInputs={setproblemInputs} name="problemNumber" type="number" placeHolder="문제 번호를 입력하세요." width="370px"></InputAtom>
+            <SearchBar inputs={problemInputs} setInputs={setproblemInputs} name="problemNumber" type="number" placeHolder="문제 번호를 입력하세요."></SearchBar>
             <S.ContentWrapper>
                 <S.ContentList>
                 {problemList.map((item, idx) => {
