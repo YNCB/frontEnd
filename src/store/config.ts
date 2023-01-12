@@ -6,20 +6,22 @@ import authSlice from "./slices/authSlice";
 import modalSlice from "./slices/modalSlice";
 
 const persistConfig = {
-    key: "root",
-    storage: storage,
-    // localstorage에 저장할 reducer 지정
-    whitelist: ["auth"],
+    key: "user",  // storage에 저장될 key 이름
+    storage: storage,  // 저장할 storage (local or session)
+    whitelist: ["auth"],  // localstorage에 저장할 reducer 지정
 };
 
-// reducer를 뭉친것을 rootReducer 라고 정해준다.
-// reducer는 여러개 있을 수 있으므로 하나로 뭉쳐주는 작업이다.
-const rootReducer = combineReducers({ auth: authSlice.reducer, modal: modalSlice.reducer });
-// persistReducer와 reducer를 뭉쳐놓은 덩어리를 같이 합쳐준다.
+// rootReducer: reducer 여러개를 하나로 뭉친 것
+const rootReducer = combineReducers({ 
+    auth: authSlice.reducer,
+    modal: modalSlice.reducer
+});
+// persistReducer와 rootReducer를 결합.
 // persistedReducer: Reducer에 이미 존재하는 액션(rootReducer) 외에 PERSIST, PURGE, FLUSH, PAUSE, REHYDRATE을 추가적으로 탐지해 특정 기능 수행
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-
+// store: Provider에 전달하여 리덕스 스토어를 사용하기 위함
+// persistor: PersistGate에 전달하여 로컬/세션 스토리지를 사용하기 위함
 export const store = configureStore({
     reducer: persistedReducer,
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
