@@ -2,18 +2,18 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { persistReducer, persistStore , FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
-import authSlice from "./slices/authSlice";
+import userSlice from "./slices/userSlice";
 import modalSlice from "./slices/modalSlice";
 
 const persistConfig = {
     key: "user",  // storage에 저장될 key 이름
     storage: storage,  // 저장할 storage (local or session)
-    whitelist: ["auth"],  // localstorage에 저장할 reducer 지정
+    whitelist: ["user"],  // localstorage에 저장할 reducer 지정
 };
 
 // rootReducer: reducer 여러개를 하나로 뭉친 것
 const rootReducer = combineReducers({ 
-    auth: authSlice.reducer,
+    user: userSlice.reducer,
     modal: modalSlice.reducer
 });
 // persistReducer와 rootReducer를 결합.
