@@ -1,34 +1,79 @@
-import axios from "axios";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/config";
 import { changeModal } from "../../store/slices/modalSlice";
+import { setUserInfo } from "../../store/slices/userSlice";
 import { ModalContentMargin, InputContainer, InputWrapper, ButtonContainer } from './ModalStyle'
-import { useState } from "react";
-import { stringify } from "querystring";
 import ButtonAtoms from "../atoms/Button";
 import { OnlyInput } from "../molecules/Input";
+import { emailLogin } from "../../apis/api/user";
+import Swal from "sweetalert2";
 
 const EmailLoginModal = () => {
 	const navigate = useNavigate();
 
-    const modal = useSelector((state: RootState) => state.modal)
+    const modal = useSelector((state: RootState) => state.modal);
+    const user = useSelector((state: RootState) => state.user);
     const dispatch = useDispatch();
-
-    const [loginFail, setLoginFail] = useState({
-        email: '',
-        password: ''
-    })
 
     const [loginInputs, setLoginInputs] = useState({
         email: '',
-        pw: ''
+        password: ''
     })
-    const {email, pw} = loginInputs;
+    const {email, password} = loginInputs;
+
+    const [loginMessage, setLoginMessage] = useState({
+        emailError: '',
+        passwordError: ''
+    })
+    const {emailError, passwordError} = loginMessage;
+    const [initError] = useState({
+        emailError: '',
+        passwordError: ''
+    })
     
-    const emailLoginHandler = () => {
-        console.log(email)
-        console.log(pw)
+    const emailLoginHandler = async () => {
+        try {
+            const response = await emailLogin(loginInputs);
+            const status = response.status;
+            const data = response.data.data;
+
+            if (status === 200) {
+                console.log(data);
+                const userInfo = {
+                    user_Id: data.user_Id,
+                    nickname: data.nickname,
+                    accessToken: data.accessToken,
+                    refreshToken: data.refreshToken,
+                    my_session: data.my_session,
+                    expireTime: data.expireTime,
+                }
+                dispatch(setUserInfo(userInfo));
+
+                Swal.fire({
+                    title: '로그인 성공',
+                    text: 'CODEBOX에 오신 것을 환영합니다!',
+                    icon: 'success'
+                })
+                .then(() => {
+                    dispatch(changeModal(0));
+                    navigate('/');
+                })
+            }
+        }
+        catch (err: any) {
+            const status = err.response.status;
+            const message = err.response.data.message;
+            console.log(err);
+            if (status === 400) {
+                setLoginMessage({
+                    ...initError,
+                    emailError: message
+                })
+            }
+            return
+        }
     }
 
 	return (
@@ -38,12 +83,12 @@ const EmailLoginModal = () => {
                 <InputWrapper>
                     <h3>이메일</h3>
                     <OnlyInput inputs={loginInputs} setInputs={setLoginInputs} name="email" type="email" placeHolder="codebox@example.com" width="100%"></OnlyInput>
-                    <p>{loginFail.email}</p>
+                    <p>{emailError}</p>
                 </InputWrapper>
                 <InputWrapper>
                     <h3>비밀번호</h3>
-                    <OnlyInput inputs={loginInputs} setInputs={setLoginInputs} name="pw" type="password" placeHolder="비밀번호를 입력하세요." width="100%"></OnlyInput>
-                    <p>{loginFail.password}</p>
+                    <OnlyInput inputs={loginInputs} setInputs={setLoginInputs} name="password" type="password" placeHolder="비밀번호를 입력하세요." width="100%"></OnlyInput>
+                    <p>{passwordError}</p>
                 </InputWrapper>
             </InputContainer>
             <ButtonContainer marginTop='35px'>
