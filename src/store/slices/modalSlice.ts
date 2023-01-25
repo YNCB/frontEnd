@@ -33,5 +33,5 @@ const modalSlice = createSlice({
     }
 })
 
-export default modalSlice
-export const { changeModal } = modalSlice.actions
+export default modalSlice;
+export const { changeModal } = modalSlice.actions;
