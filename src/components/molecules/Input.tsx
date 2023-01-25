@@ -32,14 +32,15 @@ const InputWithButtonContainer = styled(OnlyInputWrapper)`
 
 interface InputWithButtonContainerProps extends OnlyInputWrapperProps {
     children: string,
-    handler(): void
+    handler(): void,
+    value?: string,
 }
 
-const InputWithButton = ({children, inputs, setInputs, name, type, placeHolder, handler, width}: InputWithButtonContainerProps) => {
+const InputWithButton = ({children, value, inputs, setInputs, name, type, placeHolder, handler, width}: InputWithButtonContainerProps) => {
 
     return (
         <InputWithButtonContainer>
-            <InputAtom inputs={inputs} setInputs={setInputs} name={name} type={type} placeHolder={placeHolder} width='67%'></InputAtom>
+            <InputAtom value={value} inputs={inputs} setInputs={setInputs} name={name} type={type} placeHolder={placeHolder} width='67%'></InputAtom>
             <ButtonAtom width='30%' handler={handler} color='white'>{children}</ButtonAtom>
         </InputWithButtonContainer>
     )

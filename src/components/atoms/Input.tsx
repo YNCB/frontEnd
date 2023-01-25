@@ -27,10 +27,11 @@ interface InputProps {
     type: string,
     placeHolder?: string,
     width?: string,
-    border?: string
+    border?: string,
+    value?: string
 }
 
-const InputAtom = ({inputs, setInputs, name, type, placeHolder, width, border}: InputProps) => {
+const InputAtom = ({inputs, value, setInputs, name, type, placeHolder, width, border}: InputProps) => {
 
     const inputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
         const {value, name} = e.target;
@@ -41,7 +42,7 @@ const InputAtom = ({inputs, setInputs, name, type, placeHolder, width, border}: 
     }
 
     return (
-        <Input border={border} width={width} name={name} type={type} placeholder={placeHolder} onChange={ (e) => inputHandler(e) }/>
+        <Input value={value} border={border} width={width} name={name} type={type} placeholder={placeHolder} onChange={ (e) => inputHandler(e) }/>
     )
 }
 
