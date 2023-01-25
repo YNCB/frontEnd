@@ -7,7 +7,7 @@ import { ModalContentMargin, InputContainer, InputWrapper, ButtonContainer } fro
 import { useState } from "react";
 import ButtonAtoms from "../atoms/Button";
 import { InputWithButton, OnlyInput } from "../molecules/Input";
-import { emailAuth, emailJoin } from "../../api/user/user";
+import { emailAuth, emailJoin } from "../../apis/api/user";
 
 const EmailJoinModal = () => {
 	const navigate = useNavigate();
@@ -23,55 +23,98 @@ const EmailJoinModal = () => {
     })
     const {email, authCode, password, passwordCheck} = joinInputs;
 
-    const [checkAuthCode, setCheckAuthCode] = useState('')
+    const [checkAuthCode, setCheckAuthCode] = useState('');
     
-    const [joinFail, setJoinFail] = useState({
+    const [joinMessage, setJoinMessage] = useState({
         emailError: '',
         codeError: '',
         passwordError: '',
         passwordCheckError: ''
-    })
-    const {emailError, codeError, passwordError, passwordCheckError} = joinFail;
+    });
+    const [initMessage] = useState({
+        emailError: '',
+        codeError: '',
+        passwordError: '',
+        passwordCheckError: ''
+    });
+    const {emailError, codeError, passwordError, passwordCheckError} = joinMessage;
 
-    const validCheck = () => {
-        if (password === '' || passwordCheck === '') {
-            setJoinFail({
-                ...joinFail,
-                emailError: '',
-                codeError: '',
-                passwordError: '비밀번호를 입력하세요.',
-                passwordCheckError: ''
+    const validAllCheck = () => {
+        if (email === '') {
+            setJoinMessage({
+                ...initMessage,
+                emailError: '이메일을 입력하세요.'
             })
-            return
+            return true
         }
-        else if (password !== passwordCheck) {
-            setJoinFail({
-                ...joinFail,
-                emailError: '',
-                codeError: '',
-                passwordError: '',
-                passwordCheckError: '비밀번호가 일치하지 않습니다.'
+        else if (authCode === '') {
+            setJoinMessage({
+                ...initMessage,
+                codeError: '이메일 인증이 필요합니다.'
             })
-            return
+            return true
+
         }
         else if (checkAuthCode !== authCode) {
-            setJoinFail({
-                ...joinFail,
-                emailError: '',
-                codeError: '인증코드가 일치하지 않습니다.',
-                passwordError: '',
-                passwordCheckError: ''
+            setJoinMessage({
+                ...initMessage,
+                codeError: '인증코드가 일치하지 않습니다.'
             })
+            return true
+        }
+        else if (password === '' || passwordCheck === '') {
+            setJoinMessage({
+                ...initMessage,
+                passwordError: '비밀번호를 입력하세요.'
+            })
+            return true
+        }
+        else if (password !== passwordCheck) {
+            setJoinMessage({
+                ...initMessage,
+                passwordCheckError: '비밀번호가 일치하지 않습니다.'
+            })
+            return true
+        }
+    }
+
+    const emailAuthHandler = async () => {
+        if (email === '') {
+            setJoinMessage({
+                ...initMessage,
+                emailError: '이메일을 입력하세요.'
+            })
+            return
+        }
+
+        try {
+            const response = await emailAuth({email});
+            const status = response.status;
+            const data = response.data.data;
+
+            if (status === 200) {
+                setCheckAuthCode(data.authCode);
+            }
+        }
+        catch(err: any) {
+            const status = err.response.status;
+            if (status === 400) {
+                setJoinMessage({
+                    ...initMessage,
+                    emailError: '이미 가입된 이메일입니다.'
+                });
+                setCheckAuthCode('');
+            }
             return
         }
     }
 
     const emailJoinHandler = async () => {
-        validCheck();
+        if (validAllCheck()) return
 
         try {
-            const response = await emailJoin({email, password})
-            const status = response.status
+            const response = await emailJoin({email, password});
+            const status = response.status;
 
             if (status === 200) {
                 const payload = {
@@ -79,48 +122,20 @@ const EmailJoinModal = () => {
                     email,
                     password,
                     socialType: 'Basic'
-                }
-                dispatch(changeModal(payload))
+                };
+                dispatch(changeModal(payload));
             }
         }
-        catch (err) {
-            console.log(err)
-            return
-        }
-    }
+        catch (err: any) {
+            const status = err.response.status;
 
-    const emailAuthHandler = async () => {
-        if (email === '') {
-            setJoinFail({
-                ...joinFail,
-                emailError: '이메일을 입력하세요.',
-                codeError: '',
-                passwordError: '',
-                passwordCheckError: ''
-            })
-            return
-        }
-
-        try {
-            const response = await emailAuth({email})
-            const status = response.status
-            const data = response.data.data
-
-            if (status === 200) {
-                setCheckAuthCode(data.authCode)
-            }
-            else if (status === 400) {
-                setJoinFail({
-                    ...joinFail,
-                    emailError: '이미 가입된 이메일입니다.',
-                    codeError: '',
-                    passwordError: '',
-                    passwordCheckError: ''
+            if (status === 406) {
+                setJoinMessage({
+                    ...initMessage,
+                    passwordError: '비밀번호의 조건을 확인하세요.'
                 })
             }
-        }
-        catch(err) {
-            console.log(err)
+            return
         }
     }
 
@@ -142,7 +157,7 @@ const EmailJoinModal = () => {
                 </InputWrapper>
                 <InputWrapper>
                     <h3>비밀번호</h3>
-                    <OnlyInput inputs={joinInputs} setInputs={setJoinInputs} name="password" type="password" placeHolder="비밀번호를 입력하세요." width="100%"></OnlyInput>
+                    <OnlyInput inputs={joinInputs} setInputs={setJoinInputs} name="password" type="password" placeHolder="영문 대,소문자+숫자+특수기호 8자 ~ 20자" width="100%"></OnlyInput>
                     <p>{passwordError}</p>
                 </InputWrapper>
                 <InputWrapper>
