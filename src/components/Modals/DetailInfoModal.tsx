@@ -1,99 +1,165 @@
 import { useEffect, useState } from "react"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../store/config";
 import ButtonAtoms from "../atoms/Button"
 import CheckBoxes from "../molecules/CheckBoxes"
 import { InputWithButton } from "../molecules/Input"
 import { ModalContentMargin, InputContainer, InputWrapper, ButtonContainer } from "./ModalStyle"
-import { join, validNickName } from "../../api/user/user";
+import { join, validNickName } from "../../apis/api/user";
+import Swal from "sweetalert2";
+import { changeModal } from '../../store/slices/modalSlice';
+import { useNavigate } from "react-router-dom";
 
 const DetailInfoModal = () => {
+
+    const modal = useSelector((state: RootState) => state.modal);
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const [detailInfo, setDetailInfo] = useState({
         email: '',
         job: '',
         main_lang: '',
-        nickName: '',
+        nickname: '',
         password: '',
         social_type: ''
-        // "email": "test@gmail.com",
-        // "job": "학생",
-        // "main_lang": "Java",
-        // "nickname": "test",
-        // "password": "test1234!",
-        // "social_type": "google"
     })
-    const {email, job, main_lang, nickName, password, social_type} = detailInfo;
-    const [isValidNickName, setIsValidNickName] = useState(0)
+    const {job, main_lang, nickname} = detailInfo;
+
+    const [isValidNickName, setIsValidNickName] = useState(0);
+
+    const [joinMessage, setJoinMessage] = useState({
+        nicknameError: '',
+        jobError: '',
+        langError: ''
+    })
+    const [initMessage] = useState({
+        nicknameError: '',
+        jobError: '',
+        langError: ''
+    })
+    const {nicknameError, jobError, langError} = joinMessage;
 
     const checkLists = {
         job: ['학생', '취준생', '회사원', '기타'],
         lang: ['C++', 'Python', 'JavaScript', 'Java', 'C', 'C#', 'Swift', 'Kotlin', 'Ruby', 'Go', '기타']
     }
-
-    const modal = useSelector((state: RootState) => state.modal)
     
     useEffect(()=>{
         setDetailInfo({
             ...detailInfo,
             email: modal.email,
-            nickName: modal.nickname,
+            nickname: modal.nickname,
             password: modal.password,
             social_type: modal.socialType,
         })
     },[])
 
     const validNicknameHandler = async () => {
-        if (detailInfo.nickName === '') {
-            alert('닉네임을 입력해주세요.')
+        if (detailInfo.nickname === '') {
+            setJoinMessage({
+                ...initMessage,
+                nicknameError: '닉네임을 입력해주세요.'
+            })
+            setIsValidNickName(0)
             return
         }
 
         try {
-            const body = {nickName : nickName}
+            const body = {nickname : nickname}
             const response = await validNickName(body)
             const status = response.status
-
+            
             if (status === 200) {
+                setJoinMessage({
+                    ...initMessage,
+                    nicknameError: '사용 가능한 닉네임입니다.'
+                })
                 setIsValidNickName(1)
             }
-            else if (status === 400) {
-                alert('중복')
-                return
-            }
         }
-        catch(err) {
-            console.log(err)
+        catch (err: any) {
+            const status = err.response.status;
+
+            if (status === 400) {
+                setJoinMessage({
+                    ...initMessage,
+                    nicknameError: '이미 존재하는 닉네임입니다.'
+                })
+                setIsValidNickName(0)
+            }
+            else if (status === 406) {
+                setJoinMessage({
+                    ...initMessage,
+                    nicknameError: '형식에 맞지않은 닉네임입니다.'
+                })
+                setIsValidNickName(0)
+            }
+            
             return
         }
     }
 
-    const validAllHandler = () => {
-        if (nickName === '') {
-            alert('닉네임을 입력해주세요.')
-            return
+    const validAllCheck = () => {
+        if (nickname === '') {
+            setJoinMessage({
+                ...initMessage,
+                nicknameError: '닉네임을 입력해주세요.'
+            })
+            setIsValidNickName(0)
+            return true
         }
         else if (isValidNickName === 0) {
-            alert('닉네임 중복검사가 필요합니다.')
-            return
+            setJoinMessage({
+                ...initMessage,
+                nicknameError: '닉네임 중복검사가 필요합니다.'
+            })
+            setIsValidNickName(0)
+            return true
         } 
         else if (job === '') {
-            alert('직업을 선택하세요.')
-            return
+            setJoinMessage({
+                ...initMessage,
+                jobError: '직업을 선택하세요.'
+            })
+            return true
         } 
         else if (main_lang === '') {
-            alert('메인 언어를 선택하세요.')
-            return
+            setJoinMessage({
+                ...initMessage,
+                langError: '메인 언어를 선택하세요.'
+            })
+            return true
         } 
     }
 
     const joinHandler = async () => {
-        validAllHandler()
-        try {
-            const response = await join(detailInfo)
-        }
-        catch (err) {
+        if (validAllCheck()) return
 
+        try {
+            const {status} = await join(detailInfo);
+            
+            if (status === 200) {
+                Swal.fire({
+                    title: '회원가입 완료',
+                    text: '축하합니다! 회원가입이 완료되었습니다.',
+                    icon: 'success'
+                })
+                .then(() => {
+                    dispatch(changeModal(0));
+                    navigate('/');
+                })
+            }
+        }
+        catch (err: any) {
+            const status = err.response.status;
+            
+            Swal.fire({
+                title: `${status}`,
+                text: '문제가 발생하였습니다. 관리자에게 문의하세요.',
+                icon: 'error'
+            })
         }
     }
 
@@ -103,20 +169,20 @@ const DetailInfoModal = () => {
             <InputContainer gap={'15px'}>
                 <InputWrapper>
                     <h3>닉네임</h3>
-                    <InputWithButton handler={() => validNicknameHandler()} inputs={detailInfo} setInputs={setDetailInfo} name="nickName" type="text" placeHolder="닉네임을 입력하세요.">
+                    <InputWithButton value={nickname} handler={() => validNicknameHandler()} inputs={detailInfo} setInputs={setDetailInfo} name="nickname" type="text" placeHolder="영문 or 한글 3~10자">
                         중복확인
                     </InputWithButton>
-                    <p></p>
+                    <p>{nicknameError}</p>
                 </InputWrapper>
                 <InputWrapper>
                     <h3>직업</h3>
                     <CheckBoxes name='job' list={checkLists.job} inputs={detailInfo} setInputs={setDetailInfo}></CheckBoxes>
-                    <p></p>
+                    <p>{jobError}</p>
                 </InputWrapper>
                 <InputWrapper>
                     <h3>메인 언어</h3>
                     <CheckBoxes name='main_lang' list={checkLists.lang} inputs={detailInfo} setInputs={setDetailInfo}></CheckBoxes>
-                    <p></p>
+                    <p>{langError}</p>
                 </InputWrapper>
             </InputContainer>
             <ButtonContainer marginTop='13px'>
