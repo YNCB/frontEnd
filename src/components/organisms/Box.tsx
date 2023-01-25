@@ -61,7 +61,7 @@ const Box = ({problemList}: BoxProps) => {
                                     </S.ContentComments>
                                     <S.ContentLikes>
                                         <img src={`${process.env.PUBLIC_URL}/assets/img/heart.svg`} alt=""/>
-                                        <span>{item.like}</span>
+                                        <span>{item.like} |</span>
                                     </S.ContentLikes>
                                     <S.ContentViews>
                                         <img src={`${process.env.PUBLIC_URL}/assets/img/views.svg`} alt=""/>

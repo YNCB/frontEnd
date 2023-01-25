@@ -75,9 +75,17 @@ export const ContentComments = styled.div`
         color: rgba(0, 0, 0, 0.4);
     }
 `
-export const ContentLikes = styled(ContentComments)``
+export const ContentLikes = styled(ContentComments)`
+    img {
+        width: 21px;
+    }
+`
 
-export const ContentViews = styled(ContentComments)``
+export const ContentViews = styled(ContentComments)`
+    img {
+        width: 24px;
+    }
+`
 
 export const ContentTags = styled.ul`
     display: flex;
