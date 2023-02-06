@@ -43,7 +43,7 @@ const DetailInfoModal = () => {
 
     const checkLists = {
         job: ['학생', '취준생', '회사원', '기타'],
-        lang: ['C++', 'Python', 'JavaScript', 'Java', 'C', 'C#', 'Swift', 'Kotlin', 'Ruby', 'Go', '기타']
+        lang: ['C++', 'Python', 'JS', 'Java', 'C', 'C#', 'Swift', 'Kotlin', 'Ruby', 'Go', '기타']
     }
     
     useEffect(()=>{
@@ -136,7 +136,7 @@ const DetailInfoModal = () => {
 
     const joinHandler = async () => {
         if (validAllCheck()) return
-
+        console.log(detailInfo)
         try {
             const {status} = await join(detailInfo);
             
@@ -154,7 +154,7 @@ const DetailInfoModal = () => {
         }
         catch (err: any) {
             const status = err.response.status;
-            
+            console.log(err)
             Swal.fire({
                 title: `${status}`,
                 text: '문제가 발생하였습니다. 관리자에게 문의하세요.',

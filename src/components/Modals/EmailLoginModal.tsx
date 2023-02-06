@@ -46,7 +46,6 @@ const EmailLoginModal = () => {
                     nickname: data.nickname,
                     accessToken: data.accessToken,
                     refreshToken: data.refreshToken,
-                    my_session: data.my_session,
                     expireTime: data.expireTime,
                 }
                 dispatch(setUserInfo(userInfo));
