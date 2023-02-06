@@ -48,7 +48,7 @@ export const ContentInfo = styled.div`
 `
 
 export const ContentTitle = styled.div`
-    margin: 15px 0 15px 0;
+    margin: 10px 0 40px 0;
     line-height: 35px;
     font-size: 24px;
     font-family: 'SpoqaR';
