@@ -28,7 +28,6 @@ const KakaoRedirect = () => {
                 const response = await getKakaoAuthCode(body);
                 const status = response.status;
                 const data = response.data.data;
-                console.log(response);
 
                 if (status === 200) {
                     const userInfo = {
@@ -36,7 +35,6 @@ const KakaoRedirect = () => {
                         nickname: data.nickname,
                         accessToken: data.accessToken,
                         refreshToken: data.refreshToken,
-                        my_session: data.my_session,
                         expireTime: data.expireTime
                     }
                     dispatch(setUserInfo(userInfo));
