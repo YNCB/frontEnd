@@ -38,7 +38,6 @@ const Header = () => {
         try {
             const response = await logout(headers);
             const status = response.status;
-            
             if (status === 200 || status === 201) {
                 Swal.fire({
                     title: '로그아웃',
@@ -53,10 +52,19 @@ const Header = () => {
             }
         }
         catch (err: any) {
-            console.log(err);
             const status = err.response.status;
 
             if (status === 401) {
+                Swal.fire({
+                    title: '로그아웃',
+                    text: '로그아웃되었습니다.',
+                    icon: 'success'
+                })
+                .then(() => {
+                    handleDropDown();
+                    dispatch(initUserInfo());
+                    navigate('/');
+                })
             }
         }
     }
