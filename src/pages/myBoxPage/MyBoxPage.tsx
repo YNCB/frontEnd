@@ -13,7 +13,7 @@ const MyBoxPage = () => {
         <>
             <BoxPageTitle>Welcome to Your CODEBOX</BoxPageTitle>
             <Filter filterList={filterList}/>
-            <Box problemList={problemList}/>
+            <Box/>
         </>
     )
 }
