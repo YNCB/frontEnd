@@ -8,7 +8,6 @@ const userSlice = createSlice({
         authenticated: false,
         accessToken: null,
         refreshToken: null,
-        my_session: null,
         expireTime: null,
     },
     reducers: {
@@ -20,7 +19,6 @@ const userSlice = createSlice({
                 authenticated: true,
                 accessToken: action.payload.accessToken,
                 refreshToken: action.payload.refreshToken,
-                my_session: action.payload.my_session,
                 expireTime: action.payload.expireTime,
             }
         },
@@ -32,7 +30,6 @@ const userSlice = createSlice({
                 authenticated: false,
                 accessToken: null,
                 refreshToken: null,
-                my_session: null,
                 expireTime: null,
             }
         },
@@ -41,7 +38,6 @@ const userSlice = createSlice({
                 ...state,
                 accessToken: action.payload.accessToken,
                 refreshToken: action.payload.refreshToken,
-                my_session: action.payload.my_session,
                 expireTime: action.payload.expireTime,
             }
         }
@@ -49,4 +45,4 @@ const userSlice = createSlice({
 })
 
 export default userSlice;
-export const { setUserInfo, initUserInfo } = userSlice.actions;
+export const { setUserInfo, initUserInfo, refreshUserInfo } = userSlice.actions;
