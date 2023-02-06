@@ -4,6 +4,8 @@ import storage from "redux-persist/lib/storage";
 
 import userSlice from "./slices/userSlice";
 import modalSlice from "./slices/modalSlice";
+import boxFilterSlice from "./slices/boxFilterSlice";
+import boxSlice from "./slices/boxSlice";
 
 const persistConfig = {
     key: "user",  // storage에 저장될 key 이름
@@ -14,7 +16,9 @@ const persistConfig = {
 // rootReducer: reducer 여러개를 하나로 뭉친 것
 const rootReducer = combineReducers({ 
     user: userSlice.reducer,
-    modal: modalSlice.reducer
+    modal: modalSlice.reducer,
+    boxFilter: boxFilterSlice.reducer,
+    box: boxSlice.reducer,
 });
 // persistReducer와 rootReducer를 결합.
 // persistedReducer: Reducer에 이미 존재하는 액션(rootReducer) 외에 PERSIST, PURGE, FLUSH, PAUSE, REHYDRATE을 추가적으로 탐지해 특정 기능 수행
