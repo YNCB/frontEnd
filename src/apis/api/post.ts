@@ -1,15 +1,15 @@
 import { instance, instanceWithAuth } from "../common"
 
 interface getBoxListType {
-   // params: {
-        countView: number| null;
-        language: string | null;
-        lastLikeNum: number | null;
-        lastPostId: number | null;
-        lastReplyNum: number | null;
-        orderKey: string | null;
-        searchTitle: string | null;
-    //}
+    countView: number| null;
+    language: string| null;
+    lastLikeNum: number | null;
+    lastPostId: number | null;
+    lastReplyNum: number | null;
+    orderKey: string;
+    searchTitle: string|null;
+    tags: string[];
+    type: string;
 }
 
 interface headersType {
@@ -17,9 +17,10 @@ interface headersType {
 }
 
 function getBoxList(data: getBoxListType, headers: headersType) {
-    return instance.get(`/codebox`, {params: data, headers: {
-        accessToken: headers.accessToken
-    }})
+    if (headers.accessToken) {
+        return instanceWithAuth.post(`/codebox/`, data);
+    }
+    return instance.post(`/codebox/`, data);
 }
 
 export { getBoxList, }
