@@ -1,93 +1,79 @@
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useCallback, useEffect, useState } from "react";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { getBoxList } from "../../apis/api/post";
 import { RootState } from '../../store/config';
 import * as S from "./FilterStyle"
+import { FilterListInterface } from "../../interfaces/filterListInterface"
+import { setBox } from "../../store/slices/boxSlice";
+import { SearchBar } from "../molecules/Input";
+import { initBoxFilter, setBoxFilter, updateLastPostId } from "../../store/slices/boxFilterSlice";
 
-interface FilterListProps {
-    filterList: {
-        id: number,
-        title: string,
-        filtering: {
-            id: number,
-            name: string,
-        }[];
-    }[]
-}
-
-const Filter = ({filterList}: FilterListProps) => {
-
-    /** 필터 박스에 마우스 오버 */
-    const [mouseHover, setmouseHover] = useState( Array(filterList.length).fill(-1) )
+const Filter = ({filterList}: FilterListInterface) => {
+    const dispatch = useDispatch();
+    const box = useSelector((state: RootState) => state.box);
+    const boxFilter = useSelector((state: RootState) => state.boxFilter);
     const user = useSelector((state:RootState) => state.user);
+    const accessToken = user.accessToken || '';
+    const [problemInputs, setproblemInputs] = useState({problemNumber: ''});
+    /** 필터 박스에 마우스 오버 */
+    const [mouseHover, setmouseHover] = useState( Array(filterList.length).fill(-1) );
+    const [isFilterChanged, setFilterChange] = useState(false);
 
-    useEffect(() => {
-        // const data = {
-        //     'countView: null,
-        //     'language': null,
-        //     'lastLikeNum': null,
-        //     'lastPostId': null,
-        //     'lastReplyNum': null,
-        //     'orderKey': 'latest',
-        //     'searchTitle': null
-        // }
+    const requestBoxList = useCallback( async () => {
+        try {
+            const response = await getBoxList(boxFilter, {accessToken});
+            const {status, data} = response.data;
+            console.log(status, data)
+            console.log(response)
 
-        // fetch(`${process.env.REACT_APP_BACKEND_BASE_URL}/codebox`, {
-        //     method: "GET",
-        //     headers: {
-        //         accessToken: user.accessToken || ""
-        //     },
-        //     params: JSON.stringify(data)
-        // })
-        // .then(response => response.json())
-        // .then((data) => console.log(data))
-        // .catch(error => console.log(error))
-        
-        requestBoxList();
-    }, [])
-
-    const requestBoxList = async () => {
-        const data = {
-            'countView': null,
-            'language': null,
-            'lastLikeNum': null,
-            'lastPostId': null,
-            'lastReplyNum': null,
-            'searchTitle': null,
-            'orderKey': 'latest',
+            if (status === "200") {
+                dispatch(setBox(data));
+                data.count && dispatch(updateLastPostId(data.list[data.count - 1]['post_id']));
+            }
         }
-        const headers = {
-            accessToken: user.accessToken || ''
+        catch (err) {
+            console.log(err);
         }
-        const response = await getBoxList(data, headers)
-        console.log(response)
+    }, [boxFilter, dispatch, accessToken])
+
+    const handleFilter = (key: string, value: string) => {
+        dispatch(setBoxFilter({key, value}));
+        setFilterChange(true);
     }
+
+    useEffect(()=>{
+        if (isFilterChanged) {
+            requestBoxList();
+            setFilterChange(false);
+        }
+    },[boxFilter])
 
     return (
         <S.FilterContainer>
         {
-            filterList.map((filterList,filterListIdx)=>(
-                <S.FilterWrapper key={filterList.id}>
-                <h4>{filterList.title}</h4>
+            filterList.map((filter,filterIdx)=>(
+                <S.FilterWrapper key={filter.id}>
+                <h4>{filter.title}</h4>
                 <S.FilterList>
                     {
-                    filterList.filtering.map((filteringItem,filteringIdx)=>(
+                    filter.filtering.map((filteringItem,filteringIdx)=>(
                         <S.Filters
                             key = {filteringItem.id}
-                            scale = { mouseHover[filterListIdx] === filteringItem.id ? 'scale(1.05)' : 'scale(1.0)' }
+                            scale = { mouseHover[filterIdx] === filteringItem.id ? 'scale(1.05)' : 'scale(1.0)' }
                             onMouseOver={() => {
                                 let tmp = [...mouseHover]
-                                tmp[filterListIdx] = filteringItem.id
+                                tmp[filterIdx] = filteringItem.id
                                 setmouseHover(tmp);
                             }}
                             onMouseOut={() => {
                                 let tmp = [...mouseHover]
-                                tmp[filterListIdx] = -1
+                                tmp[filterIdx] = -1
                                 setmouseHover(tmp);
                             }}
+                            onClick={() => handleFilter(filter.key, filteringItem.value)}
                             >
-                            <S.Span 
-                                scale = { mouseHover[filterListIdx] === filteringItem.id ? 'scale(1.05)' : 'scale(1.0)' }>
+                            <S.Span
+                                scale = { mouseHover[filterIdx] === filteringItem.id ? 'scale(1.05)' : 'scale(1.0)' }>
                                 {filteringItem.name}
                             </S.Span>
                         </S.Filters>
@@ -98,6 +84,12 @@ const Filter = ({filterList}: FilterListProps) => {
             )
             )
         }
+        <SearchBar 
+            inputs={problemInputs} 
+            setInputs={setproblemInputs} 
+            name="problemNumber" 
+            type="text" 
+            placeHolder="제목을 입력하세요." />
         </S.FilterContainer>
     );
 };
