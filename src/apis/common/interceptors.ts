@@ -1,6 +1,6 @@
 import { AxiosInstance, AxiosRequestConfig } from "axios";
 import moment from "moment";
-import { setUserInfo } from "../../store/slices/userSlice";
+import { refreshUserInfo } from "../../store/slices/userSlice";
 import { instance } from "./index";
 
 export const refresh = async (config: AxiosRequestConfig): Promise<AxiosRequestConfig> => {
@@ -8,6 +8,7 @@ export const refresh = async (config: AxiosRequestConfig): Promise<AxiosRequestC
     let accessToken = JSON.parse(user).accessToken;
     const refreshToken = JSON.parse(user).refreshToken;
     const expireTime = JSON.parse(user).expireTime;
+    console.log(accessToken, expireTime);
     
     if (moment(expireTime).diff(moment()) < 0 && refreshToken) {
         const headers = {
@@ -15,19 +16,17 @@ export const refresh = async (config: AxiosRequestConfig): Promise<AxiosRequestC
                 refreshToken: refreshToken,
             }
         };
-
+        
         try {
             const response = await instance.post(`/codebox/refreshToken`, null, headers);
             const data = response.data.data;
             accessToken = data.accessToken;
             const refreshToken = data.refreshToken;
-            const my_session = data.my_session;
             const expireTime = data.expireTime;
-
-            setUserInfo({
+            console.log(accessToken, expireTime);
+            refreshUserInfo({
                 accessToken,
                 refreshToken,
-                my_session,
                 expireTime,
             });
         }
