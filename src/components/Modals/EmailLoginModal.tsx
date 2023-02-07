@@ -40,11 +40,10 @@ const EmailLoginModal = () => {
             const data = response.data.data;
 
             if (status === 200) {
-                console.log(data);
                 const userInfo = {
                     user_Id: data.user_Id,
                     nickname: data.nickname,
-                    accessToken: data.accessToken,
+                    accessToken: data.authorization.slice(7),
                     refreshToken: data.refreshToken,
                     expireTime: data.expireTime,
                 }
@@ -64,7 +63,7 @@ const EmailLoginModal = () => {
         catch (err: any) {
             const status = err.response.status;
             const message = err.response.data.message;
-            console.log(err);
+            
             if (status === 400) {
                 setLoginMessage({
                     ...initError,

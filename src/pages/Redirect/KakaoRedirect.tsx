@@ -33,7 +33,7 @@ const KakaoRedirect = () => {
                     const userInfo = {
                         user_Id: data.user_Id,
                         nickname: data.nickname,
-                        accessToken: data.accessToken,
+                        accessToken: data.authorization.slice(7),
                         refreshToken: data.refreshToken,
                         expireTime: data.expireTime
                     }

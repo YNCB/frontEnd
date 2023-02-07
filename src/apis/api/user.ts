@@ -35,7 +35,7 @@ interface JoinType {
 
 interface logoutType {
     headers: {
-        accessToken: string
+        Authorization: string
     }
 }
 

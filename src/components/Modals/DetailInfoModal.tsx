@@ -136,7 +136,7 @@ const DetailInfoModal = () => {
 
     const joinHandler = async () => {
         if (validAllCheck()) return
-        console.log(detailInfo)
+        
         try {
             const {status} = await join(detailInfo);
             
