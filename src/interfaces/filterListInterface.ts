@@ -1,12 +1,10 @@
 export interface FilterListInterface {
-    filterList: {
+    id: number,
+    title: string,
+    key: string,
+    filtering: {
         id: number,
-        title: string,
-        key: string,
-        filtering: {
-            id: number,
-            name: string,
-            value: string,
-        }[];
-    }[]
+        name: string,
+        value: string,
+    }[];
 }
