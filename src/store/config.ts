@@ -4,7 +4,6 @@ import storage from "redux-persist/lib/storage";
 
 import userSlice from "./slices/userSlice";
 import modalSlice from "./slices/modalSlice";
-import boxFilterSlice from "./slices/boxFilterSlice";
 import boxSlice from "./slices/boxSlice";
 
 const persistConfig = {
@@ -17,7 +16,6 @@ const persistConfig = {
 const rootReducer = combineReducers({ 
     user: userSlice.reducer,
     modal: modalSlice.reducer,
-    boxFilter: boxFilterSlice.reducer,
     box: boxSlice.reducer,
 });
 // persistReducer와 rootReducer를 결합.
