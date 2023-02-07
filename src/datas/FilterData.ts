@@ -3,7 +3,9 @@ const myFilterList = [
         id: 1,
         title: "태그",
         key: "tags",
-        filtering: []
+        filtering: [
+            { id: 1, name: "전체", value: ''}
+        ]
     },
     {
         id: 2,
