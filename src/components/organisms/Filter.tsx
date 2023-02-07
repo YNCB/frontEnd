@@ -1,52 +1,75 @@
 import { useCallback, useEffect, useState } from "react";
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import { getBoxList } from "../../apis/api/post";
+import { useDispatch, useSelector } from "react-redux";
+import { getMainBoxList } from "../../apis/api/post";
 import { RootState } from '../../store/config';
 import * as S from "./FilterStyle"
 import { FilterListInterface } from "../../interfaces/filterListInterface"
-import { setBox } from "../../store/slices/boxSlice";
+import { initBox, setBox } from "../../store/slices/boxSlice";
 import { SearchBar } from "../molecules/Input";
-import { initBoxFilter, setBoxFilter, updateLastPostId } from "../../store/slices/boxFilterSlice";
+import { BoxFilterInterface } from "../../interfaces/boxFilterInterface";
 
-const Filter = ({filterList}: FilterListInterface) => {
+interface FilterProps {
+    filterList: FilterListInterface[],
+    boxFilters: BoxFilterInterface,
+    setBoxFilters: React.Dispatch<React.SetStateAction<BoxFilterInterface>>,
+    getBoxList: () => Promise<void>
+}
+
+const Filter = ({filterList, boxFilters, setBoxFilters, getBoxList}: FilterProps) => {
     const dispatch = useDispatch();
     const box = useSelector((state: RootState) => state.box);
-    const boxFilter = useSelector((state: RootState) => state.boxFilter);
     const user = useSelector((state:RootState) => state.user);
     const accessToken = user.accessToken || '';
     const [problemInputs, setproblemInputs] = useState({problemNumber: ''});
-    /** 필터 박스에 마우스 오버 */
-    const [mouseHover, setmouseHover] = useState( Array(filterList.length).fill(-1) );
     const [isFilterChanged, setFilterChange] = useState(false);
+    /** 필터 박스에 마우스 오버 */
+    const [mouseHover, setmouseHover] = useState(Array(filterList.length).fill(-1));
+    const [isFilterClicked, setFilterClicked] = useState(Array(filterList.length).fill(-1));
 
     const requestBoxList = useCallback( async () => {
         try {
-            const response = await getBoxList(boxFilter, {accessToken});
+            const response = await getMainBoxList(boxFilters, {accessToken});
             const {status, data} = response.data;
             console.log(status, data)
             console.log(response)
 
             if (status === "200") {
                 dispatch(setBox(data));
-                data.count && dispatch(updateLastPostId(data.list[data.count - 1]['post_id']));
+                setBoxFilters({
+                    ...boxFilters,
+                    lastPostId: data.count ? data.list[data.count - 1]['post_id'] : null
+                })
             }
         }
         catch (err) {
             console.log(err);
         }
-    }, [boxFilter, dispatch, accessToken])
+    }, [boxFilters, dispatch, accessToken, setBoxFilters])
 
-    const handleFilter = (key: string, value: string) => {
-        dispatch(setBoxFilter({key, value}));
-        setFilterChange(true);
+    const handleFilter = (key: string, value: string, id: number, idx: number) => {
+        if (isFilterClicked[idx] !== id) {
+            let tmp = [...isFilterClicked];
+            tmp[idx] = id;
+            setFilterClicked(tmp);
+            setBoxFilters({
+                ...boxFilters,
+                lastPostId: null,
+                [key]: value
+            })
+            setFilterChange(true);
+        }
     }
 
     useEffect(()=>{
         if (isFilterChanged) {
-            requestBoxList();
+            getBoxList();
             setFilterChange(false);
         }
-    },[boxFilter])
+    },[boxFilters, isFilterChanged, getBoxList])
+
+    useEffect(() => {
+        setFilterClicked([...isFilterClicked].map(item => 1));
+    }, [])
 
     return (
         <S.FilterContainer>
@@ -60,6 +83,7 @@ const Filter = ({filterList}: FilterListInterface) => {
                         <S.Filters
                             key = {filteringItem.id}
                             scale = { mouseHover[filterIdx] === filteringItem.id ? 'scale(1.05)' : 'scale(1.0)' }
+                            opacity = { isFilterClicked[filterIdx] === filteringItem.id ? '1' : '.3' }
                             onMouseOver={() => {
                                 let tmp = [...mouseHover]
                                 tmp[filterIdx] = filteringItem.id
@@ -70,10 +94,11 @@ const Filter = ({filterList}: FilterListInterface) => {
                                 tmp[filterIdx] = -1
                                 setmouseHover(tmp);
                             }}
-                            onClick={() => handleFilter(filter.key, filteringItem.value)}
-                            >
+                            onClick={() => handleFilter(filter.key, filteringItem.value, filteringItem.id, filterIdx)
+                        }>
                             <S.Span
-                                scale = { mouseHover[filterIdx] === filteringItem.id ? 'scale(1.05)' : 'scale(1.0)' }>
+                                scale = { mouseHover[filterIdx] === filteringItem.id ? 'scale(1.05)' : 'scale(1.0)' }
+                                >
                                 {filteringItem.name}
                             </S.Span>
                         </S.Filters>

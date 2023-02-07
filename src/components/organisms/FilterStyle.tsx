@@ -22,7 +22,8 @@ export const FilterList = styled.ul`
     padding-top: 15px;
 `
 
-export const Filters = styled.li< {scale : string} >`
+export const Filters = styled.li< {scale : string, opacity : string} >`
+    opacity: ${({opacity}) => opacity};
     padding: 10px 20px;
     border: 1px solid #D0D0D0;
     border-radius: 30px;
