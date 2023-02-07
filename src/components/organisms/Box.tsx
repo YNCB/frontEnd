@@ -5,7 +5,7 @@ import * as S from './BoxStyle'
 import { BoxInterface } from "../../interfaces/boxInterface";
 import { useSelector } from "react-redux";
 
-const Box = () => {
+const Box = ({isMain}: {isMain: boolean}) => {
     const box = useSelector((state: RootState) => state.box);
     const [focus, setFocus] = useState(-1);
 
@@ -55,8 +55,8 @@ const Box = () => {
                                     </S.ContentViews>
                                 </S.ContentCommentsAndLikes>
                             </S.ContentLink>
-                            <S.ContentDetailLink to='/mybox'>
-                                <p>다른 유저 풀이</p>
+                            <S.ContentDetailLink to='/userbox' state={{ nickname: item.nickname }}>
+                                <p>{isMain ? `${item.nickname}` : '다른 유저 풀이'}</p>
                                 <img
                                     src={`${process.env.PUBLIC_URL}/assets/img/arrow.svg`}
                                     alt="otherUserContentButton"
