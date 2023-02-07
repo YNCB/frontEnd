@@ -1,27 +1,39 @@
-import problemList from '../Datas/ProblemData'
-import { myFilterList, othersFilterList } from "../Datas/FilterData"
+import { useCallback, useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { othersFilterList } from "../../datas/FilterData"
 import Filter from "../../components/organisms/Filter"
 import Box from '../../components/organisms/Box'
 import BoxPageTitle from '../../components/atoms/BoxPageTitle'
-import { useCallback, useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../store/config'
-import { getBoxList } from '../../apis/api/post'
-import { addBox, setBox } from '../../store/slices/boxSlice'
-import { setBoxFilter, updateLastPostId } from '../../store/slices/boxFilterSlice'
+import { addBox, initBox, setBox } from '../../store/slices/boxSlice'
+import { getMainBoxList } from '../../apis/api/post'
+import { BoxFilterInterface } from '../../interfaces/boxFilterInterface'
 
-const MainPage = () => {
+const MainBox = () => {
     const dispatch = useDispatch();
-    const box = useSelector((state: RootState) => state.box);
-    const boxFilter = useSelector((state : RootState) => state.boxFilter);
     const user = useSelector((state : RootState) => state.user);
+    const box = useSelector((state: RootState) => state.box);
     const [isFetching, setFetching] = useState(false);
     const filterList = [...othersFilterList];
     const accessToken = user.accessToken || '';
-    
+    const initBoxFilters = {
+        countView: null,
+        lastLikeNum: null,
+        lastPostId: null,
+        lastReplyNum: null,
+        searchTitle: "",
+        language: "",
+        orderKey: "latest",
+        tags: [],
+        type: ""
+    }
+    const [boxFilters, setBoxFilters] = useState<BoxFilterInterface>({
+        ...initBoxFilters
+    })
+
     const requestBoxList = useCallback( async () => {
         try {
-            const response = await getBoxList(boxFilter, {accessToken});
+            const response = await getMainBoxList(boxFilters, {accessToken});
             const {status, data} = response.data;
             console.log(status, data)
             console.log(response)
@@ -29,17 +41,20 @@ const MainPage = () => {
             if (status === "200") {
                 dispatch(setBox(data));
                 setFetching(false);
-                data.count && dispatch(updateLastPostId(data.list[data.count - 1]['post_id']));
+                setBoxFilters({
+                    ...boxFilters,
+                    lastPostId: data.count ? data.list[data.count - 1]['post_id'] : null
+                })
             }
         }
         catch (err) {
             console.log(err);
         }
-    }, [boxFilter, accessToken, dispatch])
+    }, [boxFilters, accessToken, dispatch])
 
     const requestBoxListByInfiniteScoll = useCallback( async () => {
         try {
-            const response = await getBoxList(boxFilter, {accessToken});
+            const response = await getMainBoxList(boxFilters, {accessToken});
             const {status, data} = response.data;
             console.log(status, data)
             console.log(response)
@@ -47,13 +62,16 @@ const MainPage = () => {
             if (status === "200") {
                 dispatch(addBox(data));
                 setFetching(false);
-                data.count && dispatch(updateLastPostId(data.list[data.count - 1]['post_id']));
+                setBoxFilters({
+                    ...boxFilters,
+                    lastPostId: data.count ? data.list[data.count - 1]['post_id'] : null
+                })
             }
         }
         catch (err) {
             console.log(err);
         }
-    }, [boxFilter])
+    }, [boxFilters, accessToken, dispatch])
     
     useEffect(() => {
         requestBoxList();
@@ -67,8 +85,12 @@ const MainPage = () => {
         }
         window.addEventListener('scroll', handleScroll);
         
-        // 무한스크롤 해제
-        return () => window.removeEventListener('scroll', handleScroll);
+        // 무한스크롤 해제 및 필터, 박스 초기화
+        return () => {
+            setBoxFilters({...initBoxFilters});
+            dispatch(initBox());
+            window.removeEventListener('scroll', handleScroll);
+        }
     }, [])
 
     useEffect(() => {
@@ -76,15 +98,15 @@ const MainPage = () => {
             requestBoxListByInfiniteScoll();
         }
         else if (!box.hasNext) setFetching(false);
-    }, [isFetching, box.hasNext])
+    }, [isFetching, box.hasNext, requestBoxListByInfiniteScoll])
 
     return (
         <>
             <BoxPageTitle>Welcome to CODEBOX</BoxPageTitle>
-            <Filter filterList={filterList}/>
-            <Box/>
+            <Filter filterList={filterList} boxFilters={boxFilters} setBoxFilters={setBoxFilters} getBoxList={requestBoxList}/>
+            <Box isMain={true}/>
         </>
     )
 }
 
-export default MainPage
+export default MainBox

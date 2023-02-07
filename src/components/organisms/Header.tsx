@@ -31,7 +31,7 @@ const Header = () => {
     const handleLogout = async () => {
         const headers = {
             headers : {
-                accessToken: user.accessToken || '',
+                Authorization: `Bearer ${user.accessToken}` || '',
             }
         }
 
@@ -53,8 +53,9 @@ const Header = () => {
         }
         catch (err: any) {
             const status = err.response.status;
+            console.log(err);
 
-            if (status === 401) {
+            if (status === 401 || status === 412) {
                 Swal.fire({
                     title: '로그아웃',
                     text: '로그아웃되었습니다.',
@@ -76,8 +77,8 @@ const Header = () => {
                     <HeaderLogo to='/'><img src={`${process.env.PUBLIC_URL}/assets/img/logo.png`} alt="logo" /></HeaderLogo>
                     {user.authenticated ? (
                     <NavWrapper>
-                        <Link to = '/mybox'><button>내 박스</button></Link>
-                        <Link to = '/post'><button>문제 등록</button></Link>
+                        <Link to={'/userbox'} state={{ nickname: user.nickname || '' }}><button>내 박스</button></Link>
+                        <Link to='/post'><button>문제 등록</button></Link>
                         <button onClick = { handleDropDown }>
                             <span>{user.nickname}</span>
                             <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"></path></svg>
