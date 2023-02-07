@@ -1,6 +1,6 @@
 import { instance, instanceWithAuth } from "../common"
 
-interface getBoxListType {
+interface getBoxListInterface {
     countView: number| null;
     language: string| null;
     lastLikeNum: number | null;
@@ -16,11 +16,15 @@ interface headersType {
     accessToken: string
 }
 
-function getBoxList(data: getBoxListType, headers: headersType) {
+function getMainBoxList(data: getBoxListInterface, headers: headersType) {
     if (headers.accessToken) {
         return instanceWithAuth.post(`/codebox/`, data);
     }
     return instance.post(`/codebox/`, data);
 }
 
-export { getBoxList, }
+function getUserBoxList(nickname: string, data: getBoxListInterface, isMyBox: boolean) {
+    return isMyBox ? instanceWithAuth.post(`/codebox/${nickname}`, data) : instance.post(`/codebox/${nickname}`, data);
+}
+
+export { getMainBoxList, getUserBoxList }
