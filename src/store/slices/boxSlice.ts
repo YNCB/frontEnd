@@ -8,6 +8,14 @@ const boxSlice = createSlice({
         list: []
     },
     reducers: {
+        initBox(state) {
+            return {
+                ...state,
+                count: 0,
+                hasNext: false,
+                list: []
+            }
+        },
         setBox(state, action) {
             return {
                 ...state,
@@ -28,4 +36,4 @@ const boxSlice = createSlice({
 })
 
 export default boxSlice;
-export const { setBox, addBox } = boxSlice.actions;
+export const { initBox, setBox, addBox } = boxSlice.actions;
