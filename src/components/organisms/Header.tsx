@@ -29,6 +29,9 @@ const Header = () => {
     }
 
     const handleLogout = async () => {
+        dispatch(initUserInfo());
+        navigate('/');
+        handleDropDown();
         const headers = {
             headers : {
                 Authorization: `Bearer ${user.accessToken}` || '',
@@ -44,11 +47,6 @@ const Header = () => {
                     text: '로그아웃되었습니다.',
                     icon: 'success'
                 })
-                .then(() => {
-                    handleDropDown();
-                    dispatch(initUserInfo());
-                    navigate('/');
-                })
             }
         }
         catch (err: any) {
@@ -56,15 +54,11 @@ const Header = () => {
             console.log(err);
 
             if (status === 401 || status === 412) {
+                navigate('/');
                 Swal.fire({
                     title: '로그아웃',
                     text: '로그아웃되었습니다.',
                     icon: 'success'
-                })
-                .then(() => {
-                    handleDropDown();
-                    dispatch(initUserInfo());
-                    navigate('/');
                 })
             }
         }

@@ -1,6 +1,6 @@
 import { AxiosInstance, AxiosRequestConfig } from "axios";
-import moment from "moment";
-import { refreshUserInfo } from "../../store/slices/userSlice";
+import moment from "moment-timezone";
+import Swal from "sweetalert2";
 import { instance } from "./index";
 
 export const refresh = async (config: AxiosRequestConfig): Promise<AxiosRequestConfig> => {
@@ -8,9 +8,9 @@ export const refresh = async (config: AxiosRequestConfig): Promise<AxiosRequestC
     let accessToken = JSON.parse(user).accessToken;
     const refreshToken = JSON.parse(user).refreshToken;
     const expireTime = JSON.parse(user).expireTime;
-    console.log(accessToken, expireTime);
-    
-    if (moment(expireTime).diff(moment()) < 0 && refreshToken) {
+    const timeDiff = moment.duration(moment.tz(expireTime, 'Asia/Seoul').diff(moment().local())).seconds();
+
+    if (timeDiff < 0 && refreshToken) {
         const headers = {
             headers: {
                 RefreshToken: refreshToken,
@@ -23,17 +23,33 @@ export const refresh = async (config: AxiosRequestConfig): Promise<AxiosRequestC
             accessToken = data.authorization.slice(7);
             const refreshToken = data.refreshToken;
             const expireTime = data.expireTime;
-            console.log(accessToken, expireTime);
-            refreshUserInfo({
-                accessToken,
-                refreshToken,
-                expireTime,
-            });
+            const newUser = {
+                user: JSON.stringify({
+                    nickname: JSON.parse(user).nickname,
+                    authenticated: true,
+                    accessToken: accessToken,
+                    refreshToken: refreshToken,
+                    expireTime: expireTime,
+                }),
+                _persist: JSON.stringify({
+                    version:-1,
+                    rehydrated:true
+                })
+            }
+            // console.log(accessToken, expireTime);
+            // console.log(JSON.stringify(newUser));
+            localStorage.setItem('persist:user', JSON.stringify(newUser));
         }
         catch (err: any) {
             const status = err.response.status;
             console.log(err);
-            alert(`${status} 에러 발생: 관리자에게 문의하세요.`);
+            Swal.fire({
+                title: '토큰 만료',
+                text: '재로그인이 필요합니다.',
+                icon: 'error'
+            })
+            alert(`${status}: 재로그인이 필요합니다.`);
+            localStorage.setItem('persist:user', '');
         }
     }
 

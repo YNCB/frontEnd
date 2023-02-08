@@ -13,8 +13,6 @@ function createInstanceWithAuth() {
         user = JSON.parse(localStorage.getItem('persist:user') ?? '').user;
         accessToken = String(JSON.parse(user).accessToken);
     }
-    // const user = JSON.parse(localStorage.getItem('persist:user') ?? '').user;
-    // const accessToken: string = String(JSON.parse(user).accessToken);
 
     const instanceWithAuth = axios.create({
         baseURL: `${process.env.REACT_APP_BACKEND_BASE_URL}`,
