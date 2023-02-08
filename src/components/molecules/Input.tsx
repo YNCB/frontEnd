@@ -9,7 +9,8 @@ interface OnlyInputWrapperProps {
     name: string,
     type: string,
     placeHolder?: string,
-    width?: string
+    width?: string,
+    handleClick?: () => void
 }
 
 const OnlyInputWrapper = styled.div`
@@ -56,12 +57,12 @@ const SearchBarContainer = styled.div`
     border-radius: 6px;
 `
 
-const SearchBar = ({inputs, setInputs, name, type, placeHolder, width}: OnlyInputWrapperProps) => {
+const SearchBar = ({inputs, setInputs, name, type, placeHolder, width, handleClick}: OnlyInputWrapperProps) => {
 
     return (
         <SearchBarContainer>
-            <InputAtom border='none' inputs={inputs} setInputs={setInputs} name={name} type={type} placeHolder={placeHolder} width='90%'></InputAtom>
-            <SearchButton handler={()=>{}}/>
+            <InputAtom border='none' inputs={inputs} setInputs={setInputs} name={name} type={type} placeHolder={placeHolder} width='90%' buttonhandler={() => handleClick && handleClick()}></InputAtom>
+            <SearchButton handler={() => {handleClick && handleClick()}}/>
         </SearchBarContainer>
     )
 }
