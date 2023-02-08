@@ -9,6 +9,7 @@ import { RootState } from "../../store/config"
 import { getUserBoxList } from "../../apis/api/post"
 import { addBox, initBox, setBox } from "../../store/slices/boxSlice"
 import { BoxFilterInterface } from "../../interfaces/boxFilterInterface"
+import { BoxInterface } from "../../interfaces/boxInterface"
 
 const UserBox = () => {
     const dispatch = useDispatch();
@@ -48,6 +49,18 @@ const UserBox = () => {
                     ...boxFilters,
                     lastPostId: data.count ? data.list[data.count - 1]['post_id'] : null
                 })
+
+                if (isMyBox && filterList[0].filtering.length === 1) {
+                    const tags: string[] = Array.from(new Set(data.list.reduce((init: string[], item: BoxInterface) => init.concat(item.tags) ,[])))
+                    const newTags = tags.map((item, idx: number) => {
+                        return {
+                            id: idx+2,
+                            name: item,
+                            value: item
+                        }
+                    });
+                    filterList[0].filtering = filterList[0].filtering.concat(newTags);
+                }
             }
         }
         catch (err) {
@@ -106,7 +119,7 @@ const UserBox = () => {
     return (
         <>
             <BoxPageTitle>{user.nickname === nickname ? `Welcome to Your CODEBOX` : `Welcome to ${nickname}'s CODEBOX`}</BoxPageTitle>
-            <Filter filterList={filterList} boxFilters={boxFilters} setBoxFilters={setBoxFilters} getBoxList={requestUserBoxList}/>
+            <Filter filterList={filterList} boxFilters={boxFilters} setBoxFilters={setBoxFilters} getBoxList={requestUserBoxList} isMyBox={isMyBox}/>
             <Box isMain={false}/>
         </>
     )
