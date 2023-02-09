@@ -25,7 +25,7 @@ const Box = ({isMain}: {isMain: boolean}) => {
                         }}
                     >
                         <S.ContentContainer>
-                            <S.ContentLink to='/post'>
+                            <S.ContentLink to='/detailBox'>
                                 <S.ContentInfo>
                                     <p>{item.language} |</p>
                                     <p>{item.type === 'ALONE' ? '혼자 푼 문제' : '보고 푼 문제'}</p>
