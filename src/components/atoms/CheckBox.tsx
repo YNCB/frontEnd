@@ -1,4 +1,4 @@
-import { Children } from "react"
+import { Children, useEffect } from "react"
 import styled from "styled-components"
 
 
@@ -9,7 +9,8 @@ interface CheckBoxAtomProps {
     inputs: {},
     setInputs({}): void,
     isCheck: boolean[],
-    setIsCheck({}): void
+    setIsCheck({}): void,
+    defaultId?: number
 }
 
 const CheckBoxAtomContainer = styled.li`
@@ -31,8 +32,7 @@ const CheckLabel = styled.label`
     
 `
 
-const CheckBoxAtom = ({children, name, id, inputs, setInputs, isCheck, setIsCheck}: CheckBoxAtomProps) => {
-
+const CheckBoxAtom = ({children, name, id, inputs, setInputs, isCheck, setIsCheck, defaultId}: CheckBoxAtomProps) => {
 
     const checkHandler = () => {
         setInputs({
@@ -43,6 +43,14 @@ const CheckBoxAtom = ({children, name, id, inputs, setInputs, isCheck, setIsChec
         newIsCheck[id] = true
         setIsCheck(newIsCheck)
     }
+
+    useEffect(()=>{
+        if (defaultId !== undefined) {
+            let newIsCheck = [...isCheck].map(item=>false);
+            newIsCheck[defaultId] = true
+            setIsCheck(newIsCheck)
+        }
+    },[defaultId])
 
     return (
         <CheckBoxAtomContainer>

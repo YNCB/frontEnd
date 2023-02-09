@@ -6,7 +6,8 @@ interface CheckBoxesProps {
     name: string,
     list: string[],
     inputs: {},
-    setInputs({}): void
+    setInputs({}): void,
+    defaultId?: number
 }
 
 const CheckBoxContainer = styled.ul`
@@ -15,7 +16,7 @@ const CheckBoxContainer = styled.ul`
     gap: 15px 15px;
 `
 
-const CheckBoxes = ({name, list, inputs, setInputs}: CheckBoxesProps) => {
+const CheckBoxes = ({name, list, inputs, setInputs, defaultId} : CheckBoxesProps) => {
 
     const [isCheck, setIsCheck] = useState(Array.from({length: list.length}, () => false))
 
@@ -24,7 +25,7 @@ const CheckBoxes = ({name, list, inputs, setInputs}: CheckBoxesProps) => {
             {
                 list.map((item, idx) => {
                     return (
-                        <CheckBoxAtom key={idx} name={name} id={idx} inputs={inputs} setInputs={setInputs} isCheck={isCheck} setIsCheck={setIsCheck}>{item}</CheckBoxAtom>
+                        <CheckBoxAtom key={idx} name={name} id={idx} defaultId={defaultId} inputs={inputs} setInputs={setInputs} isCheck={isCheck} setIsCheck={setIsCheck}>{item}</CheckBoxAtom>
                     )
                 })
             }
