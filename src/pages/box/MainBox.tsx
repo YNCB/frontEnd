@@ -41,10 +41,34 @@ const MainBox = () => {
             if (status === "200") {
                 dispatch(setBox(data));
                 setFetching(false);
-                setBoxFilters({
-                    ...boxFilters,
-                    lastPostId: data.count ? data.list[data.count - 1]['post_id'] : null
-                })
+
+                if (boxFilters.orderKey === 'countView') {
+                    setBoxFilters({
+                        ...boxFilters,
+                        countView: data.count ? data.list[data.count - 1]['post_id'] : null,
+                        lastPostId: data.count ? data.list[data.count - 1]['post_id'] : null
+                    })
+                }
+                else if (boxFilters.orderKey === 'likeNum') {
+                    setBoxFilters({
+                        ...boxFilters,
+                        lastLikeNum: data.count ? data.list[data.count - 1]['post_id'] : null,
+                        lastPostId: data.count ? data.list[data.count - 1]['post_id'] : null
+                    })
+                }
+                else if (boxFilters.orderKey === 'replyNum') {
+                    setBoxFilters({
+                        ...boxFilters,
+                        lastReplyNum: data.count ? data.list[data.count - 1]['post_id'] : null,
+                        lastPostId: data.count ? data.list[data.count - 1]['post_id'] : null
+                    })
+                }
+                else {
+                    setBoxFilters({
+                        ...boxFilters,
+                        lastPostId: data.count ? data.list[data.count - 1]['post_id'] : null
+                    })
+                }
             }
         }
         catch (err) {
@@ -62,10 +86,34 @@ const MainBox = () => {
             if (status === "200") {
                 dispatch(addBox(data));
                 setFetching(false);
-                setBoxFilters({
-                    ...boxFilters,
-                    lastPostId: data.count ? data.list[data.count - 1]['post_id'] : null
-                })
+
+                if (boxFilters.orderKey === 'countView') {
+                    setBoxFilters({
+                        ...boxFilters,
+                        countView: data.count ? data.list[data.count - 1]['post_id'] : null,
+                        lastPostId: data.count ? data.list[data.count - 1]['post_id'] : null
+                    })
+                }
+                else if (boxFilters.orderKey === 'likeNum') {
+                    setBoxFilters({
+                        ...boxFilters,
+                        lastLikeNum: data.count ? data.list[data.count - 1]['post_id'] : null,
+                        lastPostId: data.count ? data.list[data.count - 1]['post_id'] : null
+                    })
+                }
+                else if (boxFilters.orderKey === 'replyNum') {
+                    setBoxFilters({
+                        ...boxFilters,
+                        lastReplyNum: data.count ? data.list[data.count - 1]['post_id'] : null,
+                        lastPostId: data.count ? data.list[data.count - 1]['post_id'] : null
+                    })
+                }
+                else {
+                    setBoxFilters({
+                        ...boxFilters,
+                        lastPostId: data.count ? data.list[data.count - 1]['post_id'] : null
+                    })
+                }
             }
         }
         catch (err) {
@@ -99,6 +147,11 @@ const MainBox = () => {
         }
         else if (!box.hasNext) setFetching(false);
     }, [isFetching, box.hasNext, requestBoxListByInfiniteScoll])
+
+    useEffect(()=>{
+        
+        console.log(boxFilters);
+    },[boxFilters])
 
     return (
         <>
