@@ -72,7 +72,7 @@ const Header = () => {
                     {user.authenticated ? (
                     <NavWrapper>
                         <Link to={'/userbox'} state={{ nickname: user.nickname || '' }}><button>내 박스</button></Link>
-                        <Link to='/post'><button>문제 등록</button></Link>
+                        <Link to='/postBox'><button>문제 등록</button></Link>
                         <button onClick = { handleDropDown }>
                             <span>{user.nickname}</span>
                             <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"></path></svg>
@@ -81,8 +81,8 @@ const Header = () => {
                             <div>
                                 <DropDownWrapper>
                                     <DropDownContainer>
-                                        <Link to = '/' onClick={handleDropDown}>내 정보</Link>
-                                        <Link to = '/' onClick={handleDropDown}>설정</Link>
+                                        <Link to = '/myInfo' onClick={handleDropDown}>내 정보</Link>
+                                        <Link to = '/Setting' onClick={handleDropDown}>설정</Link>
                                         <Link to = '/' onClick={handleLogout}>로그아웃</Link>
                                     </DropDownContainer>
                                 </DropDownWrapper>

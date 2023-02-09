@@ -39,6 +39,12 @@ interface logoutType {
     }
 }
 
+interface putUserInfoType {
+    job: string,
+    main_lang: string,
+    nickName: string
+}
+
 function emailLogin(userData: emailLoginType) {
     return instance.post('login', userData)
 }
@@ -67,4 +73,12 @@ function logout(headers: logoutType) {
     return instance.get('codebox/logout', headers)
 }
 
-export { emailLogin, emailAuth, emailJoin, getKakaoAuthCode, validNickName, join, logout }
+function getUserInfo() {
+    return instanceWithAuth.get(`/codebox/setting`)
+}
+
+function putUserInfo(body: putUserInfoType) {
+    return instanceWithAuth.put(`/codebox/setting`, body)
+}
+
+export { emailLogin, emailAuth, emailJoin, getKakaoAuthCode, validNickName, join, logout, getUserInfo, putUserInfo }
