@@ -120,7 +120,7 @@ const UserBox = () => {
         <>
             <BoxPageTitle>{user.nickname === nickname ? `Welcome to Your CODEBOX` : `Welcome to ${nickname}'s CODEBOX`}</BoxPageTitle>
             <Filter filterList={filterList} boxFilters={boxFilters} setBoxFilters={setBoxFilters} getBoxList={requestUserBoxList} isMyBox={isMyBox}/>
-            <Box isMain={false}/>
+            <Box isMain={false} nickname={nickname}/>
         </>
     )
 }
