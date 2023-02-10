@@ -48,7 +48,7 @@ export const ContentInfo = styled.div`
 `
 
 export const ContentTitle = styled.div`
-    margin: 10px 0 40px 0;
+    margin: 5px 0 20px 0;
     line-height: 35px;
     font-size: 24px;
     font-family: 'SpoqaR';
@@ -89,10 +89,12 @@ export const ContentViews = styled(ContentComments)`
 
 export const ContentTags = styled.ul`
     display: flex;
-    gap: 10px;
+    gap: 3px 10px;
     font-size: 18px;
     font-family: 'SpoqaR';
-    color: rgba(0, 0, 0, 0.4);
+    color: rgba(0,0,0,0.4);
+    flex-wrap: wrap;
+    margin-bottom: 10px;
 `
 
 export const ContentDetailLink = styled(Link)`
