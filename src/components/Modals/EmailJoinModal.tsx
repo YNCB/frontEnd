@@ -121,7 +121,7 @@ const EmailJoinModal = () => {
                     page: 4,
                     email,
                     password,
-                    socialType: 'Basic'
+                    socialType: 'BASIC'
                 };
                 dispatch(changeModal(payload));
             }
