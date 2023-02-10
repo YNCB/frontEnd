@@ -5,7 +5,7 @@ import * as S from './BoxStyle'
 import { BoxInterface } from "../../interfaces/boxInterface";
 import { useSelector } from "react-redux";
 
-const Box = ({isMain}: {isMain: boolean}) => {
+const Box = ({isMain, nickname}: {isMain: boolean, nickname?: string}) => {
     const box = useSelector((state: RootState) => state.box);
     const [focus, setFocus] = useState(-1);
 
@@ -25,19 +25,19 @@ const Box = ({isMain}: {isMain: boolean}) => {
                         }}
                     >
                         <S.ContentContainer>
-                            <S.ContentLink to='/detailBox'>
+                            <S.ContentLink to='/detailBox' state={{ nickname: item.nickname || nickname, postId: item.post_id }}>
                                 <S.ContentInfo>
                                     <p>{item.language} |</p>
                                     <p>{item.type === 'ALONE' ? '혼자 푼 문제' : '보고 푼 문제'}</p>
                                 </S.ContentInfo>
+                                <S.ContentTitle>
+                                    <h3>{item.title}</h3>
+                                </S.ContentTitle>
                                 <S.ContentTags>
                                     {item.tags.map((tagsItem, tagsIdx) => {
                                         return <li key={tagsItem}>#{tagsItem}</li>;
                                     })}
                                 </S.ContentTags>
-                                <S.ContentTitle>
-                                    <h3>{item.title}</h3>
-                                </S.ContentTitle>
                                 <S.ContentCommentsAndLikes>
                                     <S.ContentComments>
                                         <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
