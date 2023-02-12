@@ -2,8 +2,6 @@ import styled from "styled-components";
 
 
 export const DetailBoxRepliesBox = styled.div`
-    margin-top: 50px;
-
     & > div {
         border-bottom: 1px solid #F1F3F5;
         padding: 24px 0;
@@ -38,7 +36,7 @@ export const ReplySetting = styled.div`
     & > button {
         font-size: 14px;
         font-family: 'SpoqaM';
-
+        background-color: initial;
     }
 `
 
@@ -53,7 +51,6 @@ export const RereplyContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 30px;
     border-radius: 5px;
 
     & > textarea {
@@ -74,7 +71,12 @@ export const RereplyContainer = styled.div`
     & > div {
         margin: 15px 40px 20px auto;
     }
+`
 
+export const RereplyButtonWrapper = styled.div`
+    display: flex;
+    gap: 10px;
+    width: 30%;
 `
 
 export const RereplyButton = styled.div`
@@ -82,4 +84,23 @@ export const RereplyButton = styled.div`
         cursor: pointer;
         color: #818181;
     }
+    margin-bottom: 15px;
+`
+
+export const RereplyBox = styled.div`
+    padding: 20px 40px;
+    background-color: rgba(0, 0, 0, 0.016);
+`
+
+export const Rereplybutton = styled.div`
+cursor: pointer;
+height: 40px;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 17px;
+font-family: 'SpoqaL';
+background-color: #fff;
+border: 1px solid #cbcbcb;
+border-radius: 5px;
 `

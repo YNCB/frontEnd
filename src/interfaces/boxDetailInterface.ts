@@ -9,6 +9,7 @@ export interface BoxDetailInterface {
     type: string,
     language: string,
     level: number | null,
+    problem_uri: string,
     context: string,
     replyNum: number | null,
     replies: [],
@@ -16,10 +17,9 @@ export interface BoxDetailInterface {
 }
 
 export interface ReplyInterface {
-    children: string[],
+    children: ReplyInterface[],
     content: string,
     nickname: string,
     redate: string,
     reply_id: number,
-    title: string
 }
