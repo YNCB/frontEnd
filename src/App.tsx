@@ -6,9 +6,9 @@ import UserBox from './pages/box/UserBox';
 import PostBox from './pages/problem/postBox';
 import KakaoRedirect from './pages/Redirect/KakaoRedirect';
 import ScrollToTop from './components/common/ScrollToTop';
-import Follower from './pages/info/follower';
 import MyInfoSetting from './pages/info/myInfoSetting';
 import DetailBox from './pages/problem/detailBox';
+import GoogleRedirect from './pages/Redirect/GoogleRedirect';
 
 function App() {
     return (
@@ -20,8 +20,8 @@ function App() {
 			<Route path='/userbox' element={<UserBox/>} />
 			<Route path='/postBox' element={<PostBox/>} />
 			<Route path='/detailBox' element={<DetailBox/>} />
+			<Route path='/login/oauth2/google' element={<GoogleRedirect/>} />
 			<Route path='/login/oauth2' element={<KakaoRedirect/>} />
-			<Route path='/follower' element={<Follower/>} />
 			<Route path='/setting' element={<MyInfoSetting/>} />
 			</Routes>
 		</BrowserRouter>

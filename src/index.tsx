@@ -7,13 +7,17 @@ import { Provider } from 'react-redux';
 import {store, persistor} from './store/config';
 import { PersistGate } from 'redux-persist/integration/react';
 import ScrollToTop from './components/common/ScrollToTop';
+import { GoogleOAuthProvider } from '@react-oauth/google';
+
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
 root.render(
     <Provider store={store}>
         <PersistGate persistor={persistor}>
-            <App />
+            <GoogleOAuthProvider clientId={`${process.env.REACT_APP_GOOGLE_CLIENT_ID}`}>
+                <App />
+            </GoogleOAuthProvider>
         </PersistGate>
     </Provider>
 );
