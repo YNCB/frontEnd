@@ -14,9 +14,10 @@ interface FilterProps {
     setBoxFilters: React.Dispatch<React.SetStateAction<BoxFilterInterface>>,
     getBoxList: () => Promise<void>,
     isMyBox?: boolean,
+    nickname?: string,
 }
 
-const Filter = ({filterList, boxFilters, setBoxFilters, getBoxList, isMyBox}: FilterProps) => {
+const Filter = ({filterList, boxFilters, setBoxFilters, getBoxList, isMyBox, nickname}: FilterProps) => {
     const dispatch = useDispatch();
     const box = useSelector((state: RootState) => state.box);
     const user = useSelector((state:RootState) => state.user);
@@ -38,6 +39,14 @@ const Filter = ({filterList, boxFilters, setBoxFilters, getBoxList, isMyBox}: Fi
             setFilterChange(false);
         }
     },[boxFilters, isFilterChanged, getBoxList])
+
+    useEffect(() => {
+        setFilterChange(true);
+    }, [nickname])
+
+    useEffect(() => {
+        setFilterClicked(Array(filterList.length).fill(-1).map(item => 1));
+    }, [filterList])
 
     useEffect(() => {
         if (isMyBox) {
