@@ -36,8 +36,7 @@ export const refresh = async (config: AxiosRequestConfig): Promise<AxiosRequestC
                     rehydrated:true
                 })
             }
-            // console.log(accessToken, expireTime);
-            // console.log(JSON.stringify(newUser));
+            
             localStorage.setItem('persist:user', JSON.stringify(newUser));
         }
         catch (err: any) {
