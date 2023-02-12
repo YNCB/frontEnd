@@ -8,12 +8,14 @@ import ButtonAtom from '../../components/atoms/Button';
 import { Editor } from '@toast-ui/react-editor';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import '@toast-ui/editor/dist/i18n/ko-kr';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import { postBox } from '../../apis/api/post';
+import { getEditBox, postBox, putEditBox } from '../../apis/api/post';
 
 const PostBox = () => {
 	const navigate = useNavigate();
+	const location = useLocation();
+	const {isEdit, postId} = location.state as {isEdit: boolean, postId: number | null}
 	const user = useSelector((state: RootState) => state.user);
 	const [defaultId, setDefaultId] = useState(-1);
     const checkLists = {
@@ -34,7 +36,8 @@ const PostBox = () => {
 	const editorRef = useRef<Editor>(null);
 
 	useEffect(() => {
-		requestUserInfo();
+		if (isEdit) requestGetEdit();
+		else requestUserInfo();
 	}, [])
 
 	const inputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -77,6 +80,19 @@ const PostBox = () => {
 		requestPostBox();
 	}
 
+	const editBoxHandler = () => {
+		const {title, type, language, level, problem_uri} = post;
+		if (title === '' || type === '' || language === '' || level === null || problem_uri === '' || editorRef.current?.getInstance().getMarkdown() === '') {
+            Swal.fire({
+                text: '문제 정보를 입력해주세요.',
+                icon: 'warning'
+            })
+			return
+		}
+
+		requestPostBox();
+	}
+
 	const requestUserInfo = useCallback( async () => {
         try {
             const response = await getUserInfo();
@@ -94,6 +110,26 @@ const PostBox = () => {
             console.log(err)
         }
     }, [])
+
+	const requestGetEdit = useCallback( async () => {
+		const path = {
+			nickname: user.nickname,
+			postId: String(postId)
+		}
+		try {
+			const response = await getEditBox(path);
+			const {status, data} = response.data;
+
+			console.log(response);
+			console.log(data);
+			if (status === '200') {
+				setPost(data);
+			}
+		}
+		catch (err) {
+			console.log(err);
+		}
+	}, [])
 
 	const requestPostBox = async () => {
 		try {
@@ -117,6 +153,22 @@ const PostBox = () => {
 		}
 		catch (err) {
 			console.log(err)
+		}
+	}
+
+	const requestEditBox = async () => {
+		const body = {
+			nickname: user.nickname,
+			postId: String(postId),
+			...post
+		}
+		try {
+			const response = await putEditBox(body);
+			const {status, data} = response.data;
+
+		}
+		catch (err) {
+
 		}
 	}
 
@@ -182,9 +234,17 @@ const PostBox = () => {
 					/>
 				</S.ProblemInfoBox>
 				<S.ButtonContianer>
-					<ButtonAtom width='100px' color='black' handler={()=>{postBoxHandler()}}>
-						등록
-					</ButtonAtom>
+					{
+						isEdit ? (
+							<ButtonAtom width='100px' color='black' handler={()=>{editBoxHandler()}}>
+								수정
+							</ButtonAtom>
+						) : (
+							<ButtonAtom width='100px' color='black' handler={()=>{postBoxHandler()}}>
+								등록
+							</ButtonAtom>
+						)
+					}
 					<ButtonAtom width='100px' color='white' handler={()=>{navigate(-1)}}>
 						취소
 					</ButtonAtom>
