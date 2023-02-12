@@ -26,9 +26,14 @@ interface postBoxInterface {
     problem_uri: string,
 }
 
+interface editBoxInterface extends postBoxInterface {
+    nickname: string,
+    postId: string
+}
+
 interface getDetailBoxInterface {
     nickname: string,
-    postId: string,
+    postId: string | null,
 }
 
 function getMainBoxList(data: getBoxListInterface, headers: headersType) {
@@ -38,12 +43,20 @@ function getMainBoxList(data: getBoxListInterface, headers: headersType) {
     return instance.post(`/codebox/`, data);
 }
 
-function getUserBoxList(nickname: string, data: getBoxListInterface, isMyBox: boolean) {
-    return isMyBox ? instanceWithAuth.post(`/codebox/${nickname}`, data) : instance.post(`/codebox/${nickname}`, data);
+function getUserBoxList(nickname: string, data: getBoxListInterface, accessToken: string) {
+    return accessToken ? instanceWithAuth.post(`/codebox/${nickname}`, data) : instance.post(`/codebox/${nickname}`, data);
 }
 
 function postBox(body: postBoxInterface) {
     return instanceWithAuth.post(`/codebox/write`, body)
+}
+
+function getEditBox(path: getDetailBoxInterface) {
+    return instanceWithAuth.get(`/codebox/${path.nickname}/${path.postId}/edit`)
+}
+
+function putEditBox(body: editBoxInterface) {
+    return instanceWithAuth.put(`/codebox/${body.nickname}/${body.postId}/edit`)
 }
 
 function getDetailBox(path: getDetailBoxInterface, token: boolean) {
@@ -52,7 +65,7 @@ function getDetailBox(path: getDetailBoxInterface, token: boolean) {
     return instance.get(`/codebox/${path.nickname}/${path.postId}`)
 }
 
-function deleteMyBox(path: getDetailBoxInterface) {
+function deleteMyBox(path: getDetailBoxInterface, headers: headersType) {
     return instanceWithAuth.delete(`/codebox/${path.nickname}/${path.postId}`)
 }
 
@@ -60,4 +73,4 @@ function postLike(path: getDetailBoxInterface) {
     return instanceWithAuth.post(`/codebox/${path.nickname}/${path.postId}/like`)
 }
 
-export { getMainBoxList, getUserBoxList, postBox, getDetailBox, deleteMyBox, postLike }
+export { getMainBoxList, getUserBoxList, postBox, getEditBox, putEditBox, getDetailBox, deleteMyBox, postLike }
