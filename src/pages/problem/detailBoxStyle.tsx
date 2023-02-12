@@ -34,6 +34,7 @@ export const DetailBoxHeaderInfo = styled.div`
         display: flex;
         align-items: center;
         gap: 5px;
+        cursor: pointer;
 
         & > img {
             width: 15px;
@@ -69,6 +70,9 @@ export const DetailBoxInfoList = styled.li `
         color: #717171;
         margin-right: 32px;
         width: 100px;
+    }
+    a {
+        text-decoration: underline;
     }
 `
 
