@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { othersFilterList } from "../../datas/FilterData"
 import Filter from "../../components/organisms/Filter"
 import Box from '../../components/organisms/Box'
-import BoxPageTitle from '../../components/atoms/BoxPageTitle'
+import BoxPageTitle from '../../components/molecules/BoxPageTitle'
 import { RootState } from '../../store/config'
 import { addBox, initBox, setBox } from '../../store/slices/boxSlice'
 import { getMainBoxList } from '../../apis/api/post'
@@ -35,7 +35,6 @@ const MainBox = () => {
         try {
             const response = await getMainBoxList(boxFilters, {accessToken});
             const {status, data} = response.data;
-            console.log(status, data)
             console.log(response)
             
             if (status === "200") {
@@ -45,21 +44,21 @@ const MainBox = () => {
                 if (boxFilters.orderKey === 'countView') {
                     setBoxFilters({
                         ...boxFilters,
-                        countView: data.count ? data.list[data.count - 1]['post_id'] : null,
+                        countView: data.count ? data.list[data.count - 1]['countView'] : null,
                         lastPostId: data.count ? data.list[data.count - 1]['post_id'] : null
                     })
                 }
                 else if (boxFilters.orderKey === 'likeNum') {
                     setBoxFilters({
                         ...boxFilters,
-                        lastLikeNum: data.count ? data.list[data.count - 1]['post_id'] : null,
+                        lastLikeNum: data.count ? data.list[data.count - 1]['likeNum'] : null,
                         lastPostId: data.count ? data.list[data.count - 1]['post_id'] : null
                     })
                 }
                 else if (boxFilters.orderKey === 'replyNum') {
                     setBoxFilters({
                         ...boxFilters,
-                        lastReplyNum: data.count ? data.list[data.count - 1]['post_id'] : null,
+                        lastReplyNum: data.count ? data.list[data.count - 1]['replyNum'] : null,
                         lastPostId: data.count ? data.list[data.count - 1]['post_id'] : null
                     })
                 }
@@ -80,7 +79,6 @@ const MainBox = () => {
         try {
             const response = await getMainBoxList(boxFilters, {accessToken});
             const {status, data} = response.data;
-            console.log(status, data)
             console.log(response)
             
             if (status === "200") {
@@ -90,21 +88,21 @@ const MainBox = () => {
                 if (boxFilters.orderKey === 'countView') {
                     setBoxFilters({
                         ...boxFilters,
-                        countView: data.count ? data.list[data.count - 1]['post_id'] : null,
+                        countView: data.count ? data.list[data.count - 1]['countView'] : null,
                         lastPostId: data.count ? data.list[data.count - 1]['post_id'] : null
                     })
                 }
                 else if (boxFilters.orderKey === 'likeNum') {
                     setBoxFilters({
                         ...boxFilters,
-                        lastLikeNum: data.count ? data.list[data.count - 1]['post_id'] : null,
+                        lastLikeNum: data.count ? data.list[data.count - 1]['likeNum'] : null,
                         lastPostId: data.count ? data.list[data.count - 1]['post_id'] : null
                     })
                 }
                 else if (boxFilters.orderKey === 'replyNum') {
                     setBoxFilters({
                         ...boxFilters,
-                        lastReplyNum: data.count ? data.list[data.count - 1]['post_id'] : null,
+                        lastReplyNum: data.count ? data.list[data.count - 1]['replyNum'] : null,
                         lastPostId: data.count ? data.list[data.count - 1]['post_id'] : null
                     })
                 }
@@ -148,14 +146,9 @@ const MainBox = () => {
         else if (!box.hasNext) setFetching(false);
     }, [isFetching, box.hasNext, requestBoxListByInfiniteScoll])
 
-    useEffect(()=>{
-        
-        console.log(boxFilters);
-    },[boxFilters])
-
     return (
         <>
-            <BoxPageTitle>Welcome to CODEBOX</BoxPageTitle>
+            <BoxPageTitle isMain={true}>Welcome to CODEBOX</BoxPageTitle>
             <Filter filterList={filterList} boxFilters={boxFilters} setBoxFilters={setBoxFilters} getBoxList={requestBoxList}/>
             <Box isMain={true}/>
         </>
