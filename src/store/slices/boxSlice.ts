@@ -5,7 +5,9 @@ const boxSlice = createSlice({
     initialState: {
         count: 0,
         hasNext: false,
-        list: []
+        isFollow: false,
+        list: [],
+        userId: 0
     },
     reducers: {
         initBox(state) {
@@ -13,7 +15,9 @@ const boxSlice = createSlice({
                 ...state,
                 count: 0,
                 hasNext: false,
-                list: []
+                isFollow: false,
+                list: [],
+                userId: 0
             }
         },
         setBox(state, action) {
@@ -21,7 +25,9 @@ const boxSlice = createSlice({
                 ...state,
                 count: action.payload.count,
                 hasNext: action.payload.hasNext,
+                isFollow: action.payload.isFollow,
                 list: action.payload.list,
+                userId: action.payload.userId
             }
         },
         addBox(state, action) {
@@ -29,7 +35,9 @@ const boxSlice = createSlice({
                 ...state,
                 count: action.payload.count,
                 hasNext: action.payload.hasNext,
+                isFollow: action.payload.isFollow,
                 list: state.list.concat(action.payload.list),
+                userId: action.payload.userId
             }
         }
     }
