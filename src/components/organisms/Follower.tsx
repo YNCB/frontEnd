@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from "react";
-import styled from "styled-components";
 import { getFollower, getFollowing } from "../../apis/api/follow";
 import * as S from "./SmallModalStyle";
 

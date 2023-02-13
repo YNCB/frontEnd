@@ -10,7 +10,7 @@ interface CheckBoxAtomProps {
     setInputs({}): void,
     isCheck: boolean[],
     setIsCheck({}): void,
-    defaultId?: number
+    defaultId?: number | null
 }
 
 const CheckBoxAtomContainer = styled.li`
@@ -45,7 +45,7 @@ const CheckBoxAtom = ({children, name, id, inputs, setInputs, isCheck, setIsChec
     }
 
     useEffect(()=>{
-        if (defaultId !== undefined) {
+        if (defaultId !== undefined && defaultId !== null) {
             let newIsCheck = [...isCheck].map(item=>false);
             newIsCheck[defaultId] = true
             setIsCheck(newIsCheck)

@@ -65,7 +65,7 @@ const DetailBox = () => {
 
     const requestDeleteBox = async () => {
         try{
-            const response = await deleteMyBox({nickname, postId}, {accessToken: user.accessToken || ''})
+            const response = await deleteMyBox({nickname, postId})
             const {status, data} = response.data;
 
             if (status === '200') {
