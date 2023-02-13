@@ -1,9 +1,9 @@
-import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { changeModal } from '../../store/slices/modalSlice';
 import { useNavigate } from 'react-router-dom';
 import { GoogleOAuthProvider, GoogleLogin, useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
+import * as S from './LoginModalStyles';
 
 
 const LoginModal = () => {
@@ -43,13 +43,13 @@ const LoginModal = () => {
     return (
         <>
             <h1>CODEBOX에 오신 것을 환영합니다!</h1>
-            <SnsLoginContainer>
-                    <SnsLoginWrapper>
-                        <SnsLoginBtn bgColor={"#FFF"} onClick={() => googleLogin()}>
-                            <SnsLoginImg sns={"googleIcon"} />
-                        </SnsLoginBtn>
-                        <SnsLoginTitle>Google 로그인</SnsLoginTitle>
-                    </SnsLoginWrapper>
+            <S.SnsLoginContainer>
+                    <S.SnsLoginWrapper>
+                        <S.SnsLoginBtn bgColor={"#FFF"} onClick={() => googleLogin()}>
+                            <S.SnsLoginImg sns={"googleIcon"} />
+                        </S.SnsLoginBtn>
+                        <S.SnsLoginTitle>Google 로그인</S.SnsLoginTitle>
+                    </S.SnsLoginWrapper>
                     {/* <GoogleLogin
                         onSuccess={googleSuccess}
                         render={(renderProps) => (
@@ -68,56 +68,21 @@ const LoginModal = () => {
                     </SnsLoginBtn>
                     <SnsLoginTitle>Google 로그인</SnsLoginTitle>
                 </SnsLoginWrapper> */}
-                <SnsLoginWrapper>
-                    <SnsLoginBtn bgColor={"#FAE100"} onClick = { () => {kakaoLoginHandler()} }>
-                        <SnsLoginImg sns={"KakaoIcon"} />
-                    </SnsLoginBtn>
-                    <SnsLoginTitle>Kakao 로그인</SnsLoginTitle>
-                </SnsLoginWrapper>
-                <SnsLoginWrapper>
-                    <SnsLoginBtn onClick = { () => emailLoginButtonHandler() } bgColor={"#5B5B5B"}>
-                        <SnsLoginImg sns="emailIcon" />
-                    </SnsLoginBtn>
-                    <SnsLoginTitle>Email 로그인</SnsLoginTitle>
-                </SnsLoginWrapper>
-            </SnsLoginContainer>
+                <S.SnsLoginWrapper>
+                    <S.SnsLoginBtn bgColor={"#FAE100"} onClick = { () => {kakaoLoginHandler()} }>
+                        <S.SnsLoginImg sns={"kakaoIcon"} />
+                    </S.SnsLoginBtn>
+                    <S.SnsLoginTitle>Kakao 로그인</S.SnsLoginTitle>
+                </S.SnsLoginWrapper>
+                <S.SnsLoginWrapper>
+                    <S.SnsLoginBtn onClick = { () => emailLoginButtonHandler() } bgColor={"#5B5B5B"}>
+                        <S.SnsLoginImg sns="emailIcon" />
+                    </S.SnsLoginBtn>
+                    <S.SnsLoginTitle>Email 로그인</S.SnsLoginTitle>
+                </S.SnsLoginWrapper>
+            </S.SnsLoginContainer>
         </>
     )
 }
-
-const SnsLoginContainer = styled.section`
-    display: flex;
-    margin-top: 70px;
-    justify-content: space-between;
-    width: 100%;
-`
-
-const SnsLoginWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-`
-
-const SnsLoginBtn = styled.button< {bgColor : string} >`
-    width: 148px;
-    height: 148px;
-    box-shadow: 0 5px 25px rgb(0 0 0 / 15%);
-    border-radius: 10px;
-    background-color: ${({bgColor}) => bgColor}
-`
-
-const SnsLoginTitle = styled.p`
-    text-align: center;
-    font-family: 'SpoqaM';
-    color: #565656;
-    margin-top: 15px;
-`
-
-const SnsLoginImg = styled.img.attrs< {sns : string} >(
-    ({sns}) => ({
-        src: `${process.env.PUBLIC_URL}/assets/img/${sns}.svg`,
-        alt: sns
-    })
-)< {sns : string} > `
-`
 
 export default LoginModal

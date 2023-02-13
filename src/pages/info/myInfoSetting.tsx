@@ -3,13 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUserInfo, putUserInfo, validNickName } from "../../apis/api/user";
 import { InputWithButton } from "../../components/molecules/Input";
 import { RootState } from "../../store/config";
-import styled from "styled-components";
 import { ButtonContainer, InputContainer } from "../../components/Modals/ModalStyle";
 import CheckBoxes from "../../components/molecules/CheckBoxes";
 import ButtonAtom from "../../components/atoms/Button";
 import { setUserInfo } from "../../store/slices/userSlice";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import * as S from './myInfoSettingStyles'
 
 const MyInfoSetting = () => {
     const dispatch = useDispatch();
@@ -158,27 +158,27 @@ const MyInfoSetting = () => {
     }, [])
 
     return (
-        <MyInfoContainer>
-            <MyInfoWrapper>
+        <S.MyInfoContainer>
+            <S.MyInfoWrapper>
                 <h2>내 정보 수정</h2>
                 <InputContainer gap={'15px'}>
-                    <InputWrapper>
+                    <S.InputWrapper>
                         <h3>닉네임</h3>
                         <InputWithButton name="nickName" value={nickName} handler={() => validNicknameHandler()} inputs={myInfo} setInputs={setMyInfo} type="text" placeHolder="영문 or 한글 3~10자">
                             중복확인
                         </InputWithButton>
                         <p>{nicknameErr}</p>
-                    </InputWrapper>
-                    <InputWrapper>
+                    </S.InputWrapper>
+                    <S.InputWrapper>
                         <h3>직업</h3>
                         <CheckBoxes name='job' list={checkLists.job} inputs={myInfo} setInputs={setMyInfo} defaultId={defaultId.job}></CheckBoxes>
                         <p>{jobErr}</p>
-                    </InputWrapper>
-                    <InputWrapper>
+                    </S.InputWrapper>
+                    <S.InputWrapper>
                         <h3>메인 언어</h3>
                         <CheckBoxes name='main_lang' list={checkLists.lang} inputs={myInfo} setInputs={setMyInfo} defaultId={defaultId.main_lang}></CheckBoxes>
                         <p>{langErr}</p>
-                    </InputWrapper>
+                    </S.InputWrapper>
                 </InputContainer>
                 <div>
                     <button>완료</button>
@@ -186,37 +186,9 @@ const MyInfoSetting = () => {
                 <ButtonContainer marginTop='13px'>
                     <ButtonAtom handler={() => requestPutUserInfoHandler()} width='130px' color='white'>완료</ButtonAtom>
                 </ButtonContainer>
-            </MyInfoWrapper>
-        </MyInfoContainer>
+            </S.MyInfoWrapper>
+        </S.MyInfoContainer>
     )
 }
-
-const MyInfoContainer = styled.div`
-    max-width: 1190px;
-    margin: 80px auto;
-`
-
-const MyInfoWrapper = styled.div`
-    padding: 0 365px;
-
-    h2 {
-        margin-bottom: 60px;
-    }
-`
-
-const InputWrapper = styled.div`
-
-    h3 {
-        font-family: 'SpoqaL';
-        margin-bottom: 5px;
-        font-size: 16px;
-    }
-    p {
-        margin-left: 3px;
-        color: #E10000;
-        font-size: 12px;
-        height: 15px;
-    }
-`
 
 export default MyInfoSetting

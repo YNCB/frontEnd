@@ -1,60 +1,8 @@
 import { useEffect, useState } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import styled from "styled-components"
+import { useSelector } from "react-redux"
 import { deleteFollow, getFollower, getFollowing, postFollow } from "../../apis/api/follow"
 import { RootState } from "../../store/config"
-import { setBox } from "../../store/slices/boxSlice"
-
-const TItleContainer = styled.div`
-max-width: 1190px;
-margin: 60px auto 0;
-display: flex;
-justify-content: center;
-`
-
-const MainTitle = styled.h3`
-    font-size: 40px;
-    text-align: center;
-`
-
-const TitleWrapper = styled.div`
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-`
-
-const UserNickname = styled.div`
-    display: flex;
-    gap: 30px;
-    align-items: center;
-
-    & > h3 {
-        font-size: 36px;
-    }
-    & > button {
-        width: 80px;
-        height: 28px;
-        background: #D9D9D9;
-        border-radius: 5px;
-        font-size: 16px;
-        font-family: 'SpoqaR';
-    }
-`
-
-const UserInfo = styled.ul`
-    margin-top: 15px;
-    display: flex;
-    gap: 30px;
-
-    & > li > span: nth-of-type(2) {
-        font-family: 'SpoqaM';
-        margin-left: 10px;
-    }
-    & > li > button {
-        font-family: 'SpoqaM';
-        margin-left: 10px;
-    }
-`
+import * as S from './BoxPageTitleStyle'
 
 interface BoxPageTitleProps {
     children: React.ReactNode,
@@ -122,15 +70,15 @@ const BoxPageTitle = ({children, isMain, nickname, isMyBox, showFollower, setSho
     }
 
     return (
-        <TItleContainer>
+        <S.TItleContainer>
         {
             isMain ?
             (
-            <MainTitle>{children}</MainTitle>
+            <S.MainTitle>{children}</S.MainTitle>
             ) :
             (
-            <TitleWrapper>
-                <UserNickname>
+            <S.TitleWrapper>
+                <S.UserNickname>
                     <h3>{nickname}</h3>
                     {
                         isMyBox || (
@@ -142,8 +90,8 @@ const BoxPageTitle = ({children, isMain, nickname, isMyBox, showFollower, setSho
                         )
                         )
                     }
-                </UserNickname>
-                <UserInfo>
+                </S.UserNickname>
+                <S.UserInfo>
                     {
                         isMyBox && (
                         <>
@@ -164,11 +112,11 @@ const BoxPageTitle = ({children, isMain, nickname, isMyBox, showFollower, setSho
                         </>
                         )
                     }
-                </UserInfo>
-            </TitleWrapper>
+                </S.UserInfo>
+            </S.TitleWrapper>
             )
         }
-        </TItleContainer>
+        </S.TItleContainer>
     )
 }
 
