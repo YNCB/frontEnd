@@ -176,7 +176,7 @@ const UserBox = () => {
             <Filter filterList={filterList} boxFilters={boxFilters} setBoxFilters={setBoxFilters} getBoxList={requestUserBoxList} isMyBox={isMyBox} nickname={nickname}/>
             <Box isMain={false} nickname={nickname}/>
             {
-                showFollower &&
+                !!showFollower &&
                 <Follower showFollower={showFollower} setShowFollower={setShowFollower}></Follower>
             }
         </>
