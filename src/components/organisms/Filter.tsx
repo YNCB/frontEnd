@@ -44,9 +44,9 @@ const Filter = ({filterList, boxFilters, setBoxFilters, getBoxList, isMyBox, nic
         setFilterChange(true);
     }, [nickname])
 
-    useEffect(() => {
-        setFilterClicked(Array(filterList.length).fill(-1).map(item => 1));
-    }, [filterList])
+    // useEffect(() => {
+    //     setFilterClicked(Array(filterList.length).fill(-1).map(item => 1));
+    // }, [filterList])
 
     useEffect(() => {
         if (isMyBox) {
