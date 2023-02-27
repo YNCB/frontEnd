@@ -1,10 +1,11 @@
 import { instance, instanceWithAuth } from "../common";
 
 function postFollow(body: {userId: number}) {
-    return instanceWithAuth.post(`/codebox/follow/add`, body)
+    return instanceWithAuth.post(`/codebox/follow/${body.userId}`)
 }
-function deleteFollow(path: {followId: number}) {
-    return instanceWithAuth.delete(`/codebox/follow/${path.followId}`)
+
+function deleteFollow(path: {userId: number}) {
+    return instanceWithAuth.delete(`/codebox/follow/${path.userId}`)
 }
 
 function getFollower() {
