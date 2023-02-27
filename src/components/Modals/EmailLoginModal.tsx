@@ -64,7 +64,7 @@ const EmailLoginModal = () => {
             const status = err.response.status;
             const message = err.response.data.message;
             
-            if (status === 400) {
+            if (status === 400 || status === 401) {
                 setLoginMessage({
                     ...initError,
                     emailError: message
