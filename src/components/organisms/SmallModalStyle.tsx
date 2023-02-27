@@ -77,6 +77,11 @@ export const WhiteBtn = styled.button`
     font-family: 'SpoqaR';
 `
 
+export const GreyBtn = styled(WhiteBtn)`
+    background: #D9D9D9;
+    border: none;
+`
+
 export const BlackBtn = styled(WhiteBtn)`
     background: #000000;
     color: #fff;
