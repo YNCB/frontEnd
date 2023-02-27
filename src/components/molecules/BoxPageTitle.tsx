@@ -33,7 +33,7 @@ const BoxPageTitle = ({children, isMain, nickname, isMyBox, showFollower, setSho
                 }
             })()
         )
-    }, [])
+    }, [isMyBox])
     
     useEffect(() => {
         // (async () => {
@@ -59,7 +59,7 @@ const BoxPageTitle = ({children, isMain, nickname, isMyBox, showFollower, setSho
 
     const requestDeleteFollow = async () => {
         try {
-            const response = await deleteFollow({followId: box.userId});
+            const response = await deleteFollow({userId: box.userId});
             const {status} = response.data;
 
             if (status === '200') setIsFollow(!isFollow);
@@ -83,7 +83,7 @@ const BoxPageTitle = ({children, isMain, nickname, isMyBox, showFollower, setSho
                     {
                         isMyBox || (
                         isFollow ? (
-                            <button onClick={requestDeleteFollow}>팔로잉</button>
+                            <button onClick={requestDeleteFollow} style={{ background: `#000000`, color: '#fff'}}>팔로잉</button>
                         ):
                         (
                             <button onClick={requestPostFollow}>팔로우</button>

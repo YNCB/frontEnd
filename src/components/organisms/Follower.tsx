@@ -1,9 +1,11 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { getFollower, getFollowing } from "../../apis/api/follow";
+import { useNavigate } from "react-router-dom";
+import { deleteFollow, getFollower, getFollowing } from "../../apis/api/follow";
 import * as S from "./SmallModalStyle";
 
 const Follower = ({showFollower, setShowFollower}: {showFollower: number, setShowFollower: React.Dispatch<React.SetStateAction<number>>}) => {
     const [userList, setUserList] = useState<{userId: number, nickname: string}[]>([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         requestGetFollow();
@@ -13,13 +15,28 @@ const Follower = ({showFollower, setShowFollower}: {showFollower: number, setSho
         try {
             const response = showFollower === 1 ? await getFollowing() : await getFollower();
             const {status, data} = response.data;
-            console.log(response);
-            if (status === '200') setUserList(data)
+            if (status === '200') {
+                setUserList(data)
+            }        
         }
         catch (err) {
             console.log(err);
         }
     }, [])
+
+    const requestDeleteFollow = async (userId: number) => {
+        try {
+            const response = await deleteFollow({userId});
+            const {status} = response.data;
+            
+            if (status === '200'){
+                requestGetFollow();
+            }
+        }
+        catch (err) {
+            console.log(err)
+        }
+    }
     
     return (
         <>
@@ -39,12 +56,12 @@ const Follower = ({showFollower, setShowFollower}: {showFollower: number, setSho
                                     showFollower === 1 ? (
                                         <li key={idx}>
                                             <span>{item.nickname}</span>
-                                            <S.BlackBtn>언팔로우</S.BlackBtn>
+                                            <S.GreyBtn onClick={() => {navigate('/userbox', {state: {nickname: item.nickname}}); setShowFollower(0);}}>보러가기</S.GreyBtn>
                                         </li>
                                     ):(
                                         <li key={idx}>
                                             <span>{item.nickname}</span>
-                                            <S.BlackBtn>언팔로우</S.BlackBtn>
+                                            <S.BlackBtn onClick={() => requestDeleteFollow(item.userId)}>언팔로우</S.BlackBtn>
                                         </li>
                                     )
                                 ))
