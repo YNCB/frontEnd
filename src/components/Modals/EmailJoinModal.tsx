@@ -1,7 +1,4 @@
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../store/config";
+import { useDispatch } from "react-redux";
 import { changeModal } from "../../store/slices/modalSlice";
 import { ModalContentMargin, InputContainer, InputWrapper, ButtonContainer } from './ModalStyle'
 import { useState } from "react";
@@ -10,9 +7,6 @@ import { InputWithButton, OnlyInput } from "../molecules/Input";
 import { emailAuth, emailJoin } from "../../apis/api/user";
 
 const EmailJoinModal = () => {
-	const navigate = useNavigate();
-
-    const modal = useSelector((state: RootState) => state.modal)
     const dispatch = useDispatch();
 
     const [joinInputs, setJoinInputs] = useState({

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserInfo, putUserInfo, validNickName } from "../../apis/api/user";
 import { InputWithButton } from "../../components/molecules/Input";
@@ -31,7 +31,7 @@ const MyInfoSetting = () => {
         langErr: ''
     })
     const {nicknameErr, jobErr, langErr} = errMessage;
-    let {nickName, job, main_lang} = myInfo;
+    let {nickName} = myInfo;
     const [defaultId, setDefaultId] = useState({
         job: -1,
         main_lang: -1

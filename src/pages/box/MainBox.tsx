@@ -35,7 +35,6 @@ const MainBox = () => {
         try {
             const response = await getMainBoxList(boxFilters, {accessToken});
             const {status, data} = response.data;
-            console.log(response)
             
             if (status === "200") {
                 dispatch(setBox(data));
@@ -79,7 +78,6 @@ const MainBox = () => {
         try {
             const response = await getMainBoxList(boxFilters, {accessToken});
             const {status, data} = response.data;
-            console.log(response)
             
             if (status === "200") {
                 dispatch(addBox(data));

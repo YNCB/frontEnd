@@ -1,4 +1,4 @@
-import { AxiosInstance, AxiosRequestConfig } from "axios";
+import { AxiosRequestConfig } from "axios";
 import moment from "moment-timezone";
 import Swal from "sweetalert2";
 import { instance } from "./index";

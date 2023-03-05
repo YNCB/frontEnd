@@ -41,8 +41,6 @@ const UserBox = () => {
         try {
             const response = await getUserBoxList(nickname, boxFilters, user.accessToken || '');
             const {status, data} = response.data;
-            console.log(status, data)
-            console.log(response)
             
             if (status === "200") {
                 dispatch(setBox(data));
@@ -97,8 +95,6 @@ const UserBox = () => {
         try {
             const response = await getUserBoxList(nickname, boxFilters, user.accessToken || '');
             const {status, data} = response.data;
-            console.log(status, data)
-            console.log(response)
             
             if (status === "200") {
                 dispatch(addBox(data));

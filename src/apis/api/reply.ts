@@ -1,4 +1,4 @@
-import { instance, instanceWithAuth } from "../common";
+import { instanceWithAuth } from "../common";
 
 interface PostReplyInterface {
     nickname: string,

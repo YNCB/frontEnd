@@ -78,8 +78,7 @@ const Header = () => {
                             <div>
                                 <S.DropDownWrapper>
                                     <S.DropDownContainer>
-                                        <Link to = '/myInfo' onClick={handleDropDown}>내 정보</Link>
-                                        <Link to = '/Setting' onClick={handleDropDown}>설정</Link>
+                                        <Link to = '/Setting' onClick={handleDropDown}>내 정보</Link>
                                         <Link to = '/' onClick={handleLogout}>로그아웃</Link>
                                     </S.DropDownContainer>
                                 </S.DropDownWrapper>

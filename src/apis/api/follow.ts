@@ -1,4 +1,4 @@
-import { instance, instanceWithAuth } from "../common";
+import { instanceWithAuth } from "../common";
 
 function postFollow(body: {userId: number}) {
     return instanceWithAuth.post(`/codebox/follow/${body.userId}`)

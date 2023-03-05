@@ -36,12 +36,6 @@ const BoxPageTitle = ({children, isMain, nickname, isMyBox, showFollower, setSho
     }, [isMyBox])
     
     useEffect(() => {
-        // (async () => {
-        //     const response = await getFollower();
-        //     console.log(response);
-        //     const response2 = await getFollowing();
-        //     console.log(response2);
-        // })();
         setIsFollow(box.isFollow);
     }, [box.isFollow])
 

@@ -6,8 +6,7 @@ import { deleteMyBox, getDetailBox, postLike } from "../../apis/api/post";
 import { RootState } from "../../store/config";
 import { Viewer } from '@toast-ui/react-editor';
 import '@toast-ui/editor/dist/toastui-editor-viewer.css';
-import { BoxDetailInterface, ReplyInterface } from "../../interfaces/boxDetailInterface";
-import moment from "moment";
+import { BoxDetailInterface } from "../../interfaces/boxDetailInterface";
 import ButtonAtom from "../../components/atoms/Button";
 import { postReply } from "../../apis/api/reply";
 import Swal from "sweetalert2";
@@ -54,8 +53,7 @@ const DetailBox = () => {
             const {status, data} = response.data;
             
             if (status === '200') {
-                setPostInfo(data)
-                console.log(data);
+                setPostInfo(data);
             }
         }
         catch (err) {
@@ -66,7 +64,7 @@ const DetailBox = () => {
     const requestDeleteBox = async () => {
         try{
             const response = await deleteMyBox({nickname, postId})
-            const {status, data} = response.data;
+            const {status} = response.data;
 
             if (status === '200') {
                 Swal.fire({
@@ -219,7 +217,7 @@ const DetailBox = () => {
             </S.DetailBoxContainer>
             {
                 showLikeList && (
-                    <LikeList showLikeList={showLikeList} setShowLikeList={setShowLikeList} postId={postId} nickname={nickname}/>
+                    <LikeList setShowLikeList={setShowLikeList} postId={postId} nickname={nickname}/>
                 )
             }
         </>

@@ -6,7 +6,6 @@ import { changeModal } from '../../store/slices/modalSlice';
 import LoginModal from './LoginModal';
 import EmailLoginModal from './EmailLoginModal';
 import DetailInfoModal from './DetailInfoModal';
-import { useEffect } from 'react';
 import EmailJoinModal from './EmailJoinModal';
 
 const Modal = ({onClose}: S.ModalProps) => {

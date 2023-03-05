@@ -1,10 +1,6 @@
-import { useCallback, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getMainBoxList } from "../../apis/api/post";
-import { RootState } from '../../store/config';
+import { useEffect, useState } from "react";
 import * as S from "./FilterStyle"
 import { FilterListInterface } from "../../interfaces/filterListInterface"
-import { initBox, setBox } from "../../store/slices/boxSlice";
 import { SearchBar } from "../molecules/Input";
 import { BoxFilterInterface } from "../../interfaces/boxFilterInterface";
 
@@ -18,10 +14,6 @@ interface FilterProps {
 }
 
 const Filter = ({filterList, boxFilters, setBoxFilters, getBoxList, isMyBox, nickname}: FilterProps) => {
-    const dispatch = useDispatch();
-    const box = useSelector((state: RootState) => state.box);
-    const user = useSelector((state:RootState) => state.user);
-    const accessToken = user.accessToken || '';
     const [problemInputs, setproblemInputs] = useState({problemNumber: ''});
     const [isFilterChanged, setFilterChange] = useState(false);
     /** 필터 박스에 마우스 오버 */
@@ -43,10 +35,6 @@ const Filter = ({filterList, boxFilters, setBoxFilters, getBoxList, isMyBox, nic
     useEffect(() => {
         setFilterChange(true);
     }, [nickname])
-
-    // useEffect(() => {
-    //     setFilterClicked(Array(filterList.length).fill(-1).map(item => 1));
-    // }, [filterList])
 
     useEffect(() => {
         if (isMyBox) {

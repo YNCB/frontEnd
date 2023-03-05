@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { RootState } from "../../store/config";
-import { OnlyInput } from "../molecules/Input";
 import * as S from './BoxStyle'
 import { BoxInterface } from "../../interfaces/boxInterface";
 import { useSelector } from "react-redux";

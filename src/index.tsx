@@ -6,7 +6,6 @@ import App from './App';
 import { Provider } from 'react-redux';
 import {store, persistor} from './store/config';
 import { PersistGate } from 'redux-persist/integration/react';
-import ScrollToTop from './components/common/ScrollToTop';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
 

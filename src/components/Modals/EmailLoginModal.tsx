@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../store/config";
+import { useDispatch } from "react-redux";
 import { changeModal } from "../../store/slices/modalSlice";
 import { setUserInfo } from "../../store/slices/userSlice";
 import { ModalContentMargin, InputContainer, InputWrapper, ButtonContainer } from './ModalStyle'
@@ -12,16 +11,12 @@ import Swal from "sweetalert2";
 
 const EmailLoginModal = () => {
 	const navigate = useNavigate();
-
-    const modal = useSelector((state: RootState) => state.modal);
-    const user = useSelector((state: RootState) => state.user);
     const dispatch = useDispatch();
 
     const [loginInputs, setLoginInputs] = useState({
         email: '',
         password: ''
     })
-    const {email, password} = loginInputs;
 
     const [loginMessage, setLoginMessage] = useState({
         emailError: '',

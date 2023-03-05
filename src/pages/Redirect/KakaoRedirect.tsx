@@ -6,13 +6,10 @@ import { RootState } from "../../store/config";
 import { setUserInfo } from "../../store/slices/userSlice";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
-import { Axios, AxiosResponse } from "axios";
 
 const KakaoRedirect = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    
-    const user = useSelector((state:RootState) => state.user);
     
     useEffect(() => {
         const params = new URL(document.location.toString()).searchParams;

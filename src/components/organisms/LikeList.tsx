@@ -4,18 +4,17 @@ import { getLikeList } from "../../apis/api/like"
 import * as S from "./SmallModalStyle"
 
 interface LikeListProps {
-    showLikeList: boolean,
     setShowLikeList: React.Dispatch<React.SetStateAction<boolean>>,
     postId: string,
     nickname: string
 }
 
-const LikeList = ({showLikeList, setShowLikeList, postId, nickname}: LikeListProps) => {
+const LikeList = ({setShowLikeList, postId, nickname}: LikeListProps) => {
     const navigate = useNavigate();
     const [userList, setUserList] = useState<string[]>([]);
 
     useEffect(() => {
-        //requestLikeUsers();
+        requestLikeUsers();
     }, [])
 
     const requestLikeUsers = useCallback( async () => {
@@ -28,12 +27,12 @@ const LikeList = ({showLikeList, setShowLikeList, postId, nickname}: LikeListPro
             }
         }
         catch (err) {
-            console.log(err)
+            console.log(err);
         }
     }, [])
 
     const moveUserPageHandler = (nickname: string) => {
-        navigate('/userbox', {state: {nickname: nickname}})
+        navigate('/userbox', {state: {nickname: nickname}});
         setShowLikeList(false);
     }
 
