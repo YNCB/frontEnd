@@ -158,8 +158,14 @@ const PostBox = () => {
 					navigate('/userbox', { state: { nickname: user.nickname || '' } });
 				});
 			}
-		} catch (err) {
-			console.log(err);
+		} catch (err: any) {
+			if (err.response.status === 500) {
+				Swal.fire({
+					title: '게시글 등록 실패',
+					text: '현재 이미지 등록이 불가합니다.',
+					icon: 'error',
+				})
+			}
 		}
 	};
 
@@ -192,7 +198,7 @@ const PostBox = () => {
 		};
 		try {
 			const response = await putEditBox(body);
-			const { status, data } = response.data;
+			const { status } = response.data;
 
 			if (status === '200') {
 				Swal.fire({
@@ -308,11 +314,6 @@ const PostBox = () => {
 							hideModeSwitch={true}
 							language="ko-KR"
 							ref={editorRef}
-							hooks={{
-								addImageBlobHook: async (blob, callback) => {
-									console.log(blob);
-								},
-							}}
 							onChange={() =>
 								setPost({
 									...post,
@@ -332,11 +333,6 @@ const PostBox = () => {
 							hideModeSwitch={true}
 							language="ko-KR"
 							ref={editorRef}
-							hooks={{
-								addImageBlobHook: async (blob, callback) => {
-									console.log(blob);
-								},
-							}}
 							onChange={() =>
 								setPost({
 									...post,
