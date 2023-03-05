@@ -93,14 +93,14 @@ export const RereplyBox = styled.div`
 `
 
 export const Rereplybutton = styled.div`
-cursor: pointer;
-height: 40px;
-display: flex;
-align-items: center;
-justify-content: center;
-font-size: 17px;
-font-family: 'SpoqaL';
-background-color: #fff;
-border: 1px solid #cbcbcb;
-border-radius: 5px;
+    cursor: pointer;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+    font-family: 'SpoqaL';
+    background-color: #fff;
+    border: 1px solid #cbcbcb;
+    border-radius: 5px;
 `
