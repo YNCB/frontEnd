@@ -1,10 +1,11 @@
 import { useDispatch } from 'react-redux';
 import { changeModal } from '../../store/slices/modalSlice';
 import { useNavigate } from 'react-router-dom';
-import { GoogleOAuthProvider, GoogleLogin, useGoogleLogin } from '@react-oauth/google';
+import { useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
 import * as S from './LoginModalStyles';
-
+import { setUserInfo } from '../../store/slices/userSlice';
+import Swal from 'sweetalert2';
 
 const LoginModal = () => {
     const dispatch = useDispatch();
@@ -25,20 +26,51 @@ const LoginModal = () => {
 
     const googleLogin = useGoogleLogin({
         onSuccess: codeResponse => {
-            (async () => {
-                console.log(codeResponse);
-                // fetch(`${process.env.REACT_APP_FRONTEND_BASE_URL}/codebox/login/token/google?code=${codeResponse.code}`)
-                // .then(res => res.json())
-                // .then(response => {
-                //     console.log(response)
-                // })
-                // .catch(error => console.log(error));    
-                const response = await axios.get(`${process.env.REACT_APP_BACKEND_BASE_URL}/codebox/login/token/google?code=${codeResponse.code}`);
-                console.log(response);
-            })();
+            getGoogleAuthCodeHandler(codeResponse.code);
         },
         flow: 'auth-code'
     })
+
+    const getGoogleAuthCodeHandler = async (code: string) => {
+        try { 
+            const response = await axios.get(`${process.env.REACT_APP_BACKEND_BASE_URL}/codebox/login/token/google?code=${code}`);
+            const {status, data} = response.data;
+
+            if (status === "200") {
+                const userInfo = {
+                    user_Id: data.user_Id,
+                    nickname: data.nickname,
+                    accessToken: data.authorization.slice(7),
+                    refreshToken: data.refreshToken,
+                    expireTime: data.expireTime
+                }
+                dispatch(setUserInfo(userInfo));
+
+                Swal.fire({
+                    title: '로그인 성공',
+                    text: 'CODEBOX에 오신 것을 환영합니다!',
+                    icon: 'success'
+                })
+                .then(() => {
+                    dispatch(changeModal(0));
+                    navigate('/');
+                })
+            }
+            else if (status === "201") {
+                const payload = {
+                    page: 4,
+                    email: data.email,
+                    nickname: "",
+                    password: data.password,
+                    socialType: data.social_type
+                }
+                dispatch(changeModal(payload));
+            }
+        }
+        catch (err) {
+            console.log(err);
+        }
+    }
 
     return (
         <>
@@ -50,24 +82,6 @@ const LoginModal = () => {
                         </S.SnsLoginBtn>
                         <S.SnsLoginTitle>Google 로그인</S.SnsLoginTitle>
                     </S.SnsLoginWrapper>
-                    {/* <GoogleLogin
-                        onSuccess={googleSuccess}
-                        render={(renderProps) => (
-                        <SnsLoginWrapper>
-                            <SnsLoginBtn bgColor={"#FFF"} onClick={renderProps.onClick}>
-                                <SnsLoginImg sns={"googleIcon"} />
-                            </SnsLoginBtn>
-                            <SnsLoginTitle>Google 로그인</SnsLoginTitle>
-                        </SnsLoginWrapper>
-                        )}
-                    /> */}
-                
-                {/* <SnsLoginWrapper>
-                    <SnsLoginBtn bgColor={"#FFF"}>
-                        <SnsLoginImg sns={"googleIcon"} />
-                    </SnsLoginBtn>
-                    <SnsLoginTitle>Google 로그인</SnsLoginTitle>
-                </SnsLoginWrapper> */}
                 <S.SnsLoginWrapper>
                     <S.SnsLoginBtn bgColor={"#FAE100"} onClick = { () => {kakaoLoginHandler()} }>
                         <S.SnsLoginImg sns={"kakaoIcon"} />
